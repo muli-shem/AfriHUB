@@ -1,0 +1,384 @@
+// Import variables from the variables file
+@import 'variables';
+
+// ProjectList styles
+.project-list-container {
+  padding: 10px 0;
+  
+  h2 {
+    font-size: 1.25rem;
+    margin-bottom: 15px;
+    color: $text-color;
+    font-weight: 500;
+  }
+}
+
+.project-feed {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  width: 100%;
+}
+
+.project-card {
+  background-color: $secondary-color;
+  border-bottom: 1px solid $hover-color;
+  transition: background-color $transition;
+  
+  &:hover {
+    background-color: $hover-color;
+  }
+  
+  &:first-child {
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+  }
+  
+  &:last-child {
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+    border-bottom: none;
+  }
+}
+
+.project-content {
+  padding: 15px;
+  
+  h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: $text-color;
+  }
+  
+  p {
+    font-size: 0.95rem;
+    line-height: 1.5;
+    color: rgba($text-color, 0.9);
+    margin-bottom: 12px;
+  }
+}
+
+.project-meta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 12px;
+  
+  .status {
+    font-size: 0.8rem;
+    padding: 4px 10px;
+    border-radius: 16px;
+    background-color: $active-color;
+    color: $text-color;
+  }
+  
+  .progress-bar {
+    flex: 1;
+    height: 4px;
+    background-color: $hover-color;
+    border-radius: 2px;
+    overflow: hidden;
+    
+    .progress-fill {
+      height: 100%;
+      background-color: $accent-color;
+    }
+  }
+  
+  .progress-text {
+    font-size: 0.8rem;
+    color: rgba($text-color, 0.7);
+    min-width: 45px;
+    text-align: right;
+  }
+}
+
+.project-image {
+  margin: 8px -15px;
+  
+  img {
+    width: 100%;
+    max-height: 250px;
+    object-fit: cover;
+  }
+}
+
+// Interaction section styling
+.project-interactions {
+  margin-top: 12px;
+  border-top: 1px solid $hover-color;
+  padding-top: 12px;
+}
+
+.interaction-buttons {
+  display: flex;
+  justify-content: space-between;
+  
+  .interaction-btn {
+    background: none;
+    border: none;
+    padding: 8px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    color: rgba($text-color, 0.7);
+    cursor: pointer;
+    transition: color $transition;
+    
+    svg {
+      font-size: 18px;
+    }
+    
+    &:hover {
+      color: $accent-color;
+    }
+    
+    &.active {
+      color: $accent-color;
+      
+      &.love {
+        color: $like-color;
+      }
+      
+      &.dislike {
+        color: $dislike-color;
+      }
+    }
+    
+    .count {
+      font-size: 0.8rem;
+    }
+    
+    &.report:hover {
+      color: $dislike-color;
+    }
+  }
+}
+
+// Comments section
+.comments-section {
+  margin-top: 16px;
+  border-top: 1px solid $hover-color;
+  padding-top: 16px;
+  
+  h4 {
+    font-size: 1rem;
+    margin-bottom: 12px;
+    font-weight: 600;
+    color: $text-color;
+  }
+}
+
+.comment-list {
+  max-height: 300px;
+  overflow-y: auto;
+  margin-bottom: 16px;
+}
+
+.comment {
+  padding: 12px;
+  border-radius: 8px;
+  background-color: $hover-color;
+  margin-bottom: 8px;
+  
+  .comment-user {
+    font-weight: 600;
+    font-size: 0.9rem;
+    margin-bottom: 4px;
+    color: $text-color;
+  }
+  
+  .comment-content {
+    font-size: 0.9rem;
+    line-height: 1.4;
+    color: rgba($text-color, 0.9);
+  }
+  
+  .comment-date {
+    font-size: 0.75rem;
+    color: rgba($text-color, 0.6);
+    margin-top: 4px;
+    text-align: right;
+  }
+}
+
+.comment-form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  
+  textarea {
+    padding: 12px;
+    border: 1px solid $hover-color;
+    border-radius: 8px;
+    resize: vertical;
+    min-height: 80px;
+    font-size: 0.9rem;
+    background-color: $secondary-color;
+    color: $text-color;
+    
+    &:focus {
+      outline: none;
+      border-color: $accent-color;
+    }
+  }
+  
+  button {
+    align-self: flex-end;
+    background-color: $accent-color;
+    color: white;
+    border: none;
+    border-radius: 24px;
+    padding: 8px 16px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    
+    &:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+    
+    &:hover:not(:disabled) {
+      background-color: darken($accent-color, 5%);
+    }
+  }
+}
+
+// Feedback form
+.feedback-section {
+  margin-top: 16px;
+  border-top: 1px solid $hover-color;
+  padding-top: 16px;
+  
+  h4 {
+    font-size: 1rem;
+    margin-bottom: 12px;
+    font-weight: 600;
+    color: rgba($text-color, 0.8);
+  }
+}
+
+.feedback-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  
+  input, textarea {
+    padding: 12px;
+    border: 1px solid $hover-color;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    background-color: $secondary-color;
+    color: $text-color;
+    
+    &:focus {
+      outline: none;
+      border-color: $accent-color;
+    }
+  }
+  
+  .feedback-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    
+    button {
+      border-radius: 24px;
+      padding: 8px 16px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      
+      &:first-child {
+        background: none;
+        border: 1px solid $hover-color;
+        color: rgba($text-color, 0.7);
+        
+        &:hover {
+          background-color: $hover-color;
+        }
+      }
+      
+      &:last-child {
+        background-color: $accent-color;
+        color: white;
+        border: none;
+        
+        &:disabled {
+          opacity: 0.6;
+          cursor: not-allowed;
+        }
+        
+        &:hover:not(:disabled) {
+          background-color: darken($accent-color, 5%);
+        }
+      }
+    }
+  }
+}
+
+// Loading and error states
+.loading-container, .error-container {
+  text-align: center;
+  padding: 30px 0;
+  font-size: 1rem;
+  color: rgba($text-color, 0.7);
+}
+
+.error-container {
+  color: $dislike-color;
+}
+
+// Media queries for responsive layout
+@media (max-width: 768px) {
+  .project-meta {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    
+    .progress-bar {
+      width: 100%;
+    }
+    
+    .progress-text {
+      align-self: flex-end;
+    }
+  }
+  
+  .interaction-buttons {
+    .interaction-btn {
+      padding: 6px;
+      
+      svg {
+        font-size: 16px;
+      }
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .project-content {
+    padding: 12px;
+  }
+  
+  .project-image {
+    margin: 8px -12px;
+    
+    img {
+      max-height: 200px;
+    }
+  }
+  
+  .feedback-form {
+    .feedback-buttons {
+      flex-direction: column;
+      
+      button {
+        width: 100%;
+      }
+    }
+  }
+}

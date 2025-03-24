@@ -1,0 +1,111 @@
+.navbar {
+  background-color: #1a1a2e; // Dark blue
+  color: #ffffff;
+  padding: 1rem 2rem;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+
+  .navbar-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+
+    .logo {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #ffffff;
+      text-decoration: none;
+      transition: color 0.3s ease;
+
+      .afrivoice {
+        background: linear-gradient(
+          to right,
+          #006600 50%, // Green
+          #DE1010 50% // Red
+        );
+        background-clip: text;
+        -webkit-background-clip: text;
+        color: transparent;
+      }
+
+      &:hover {
+        color: #f9a826; // Orange
+      }
+    }
+
+    .menu-icon {
+      display: none; // Hide by default
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: #ffffff;
+
+      @media (max-width: 768px) {
+        display: block; // Show on small screens
+      }
+    }
+
+    .nav-menu {
+      list-style: none;
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      margin: 0;
+      padding: 0;
+
+      li {
+        a {
+          text-decoration: none;
+          color: #ffffff;
+          font-size: 1rem;
+          transition: color 0.3s ease;
+
+          &:hover {
+            color: #f9a826; // Orange
+          }
+        }
+
+        .login-btn {
+          padding: 0.5rem 1rem;
+          background-color: #f9a826; // Orange
+          border-radius: 5px;
+          color: #1a1a2e; // Dark blue
+          transition: background-color 0.3s ease;
+
+          &:hover {
+            background-color: #ffcc70; // Light orange
+          }
+        }
+
+        .register-btn {
+          padding: 0.5rem 1rem;
+          background-color: #006600; // Green
+          border-radius: 5px;
+          color: #ffffff; // White
+          transition: background-color 0.3s ease;
+
+          &:hover {
+            background-color: #004400; // Darker green
+          }
+        }
+      }
+
+      @media (max-width: 768px) {
+        position: absolute;
+        top: 60px; // Adjust based on navbar height
+        left: 0;
+        width: 100%;
+        flex-direction: column;
+        background-color: #1a1a2e; // Dark blue
+        padding: 1rem;
+        display: none; // Hide by default on small screens
+
+        &.active {
+          display: flex; // Show when menu is open
+        }
+      }
+    }
+  }
+}

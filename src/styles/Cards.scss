@@ -1,0 +1,301 @@
+// Import variables
+@import 'variables';
+
+// Card styles
+.card {
+  background: $card-bg;
+  border-radius: $border-radius;
+  overflow: hidden;
+  transition: transform $transition, box-shadow $transition;
+  position: relative;
+  animation: fadeIn 0.4s ease-in-out;
+  margin-bottom: 1.5rem; // Use relative units
+  box-shadow: $box-shadow;
+  // Remove horizontal margins completely
+  margin-left: 0;
+  margin-right: 0;
+  width: 100%;
+  
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba($accent-color, 0.2);
+  }
+  
+  // Gradient border effect on hover
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: $border-radius;
+    padding: 2px;
+    background: linear-gradient(135deg, $accent-color, $primary-color);
+    mask: 
+      linear-gradient(#fff 0 0) content-box, 
+      linear-gradient(#fff 0 0);
+    -webkit-mask: 
+      linear-gradient(#fff 0 0) content-box, 
+      linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity: 0;
+    transition: opacity $transition;
+  }
+  
+  &:hover::after {
+    opacity: 1;
+  }
+  
+  .card-image {
+    width: 100%;
+    margin: 0.625rem 0; // Use relative units
+    border-radius: $border-radius;
+    overflow: hidden;
+    
+    &.twitter-style {
+      max-height: none;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      
+      img {
+        width: 100%;
+        object-fit: contain;
+        border-radius: $border-radius;
+        transition: transform 0.5s ease;
+        
+        &:hover {
+          transform: scale(1.02);
+        }
+      }
+    }
+  }
+  
+  .card-content {
+    padding: 1.5rem;
+    
+    .card-header {
+      margin-bottom: 1rem;
+      
+      h3 {
+        margin-top: 0;
+        margin-bottom: 0.25rem;
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: $dark-text;
+      }
+      
+      small {
+        display: block;
+        color: $light-text;
+        font-size: 0.85rem;
+      }
+    }
+    
+    .card-text {
+      color: $dark-text;
+      line-height: 1.6;
+      margin-bottom: 1rem;
+      font-size: 1rem;
+      white-space: pre-wrap;
+    }
+  }
+  
+  .card-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
+    
+    .action-wrapper {
+      flex: 1;
+      
+      .action-btn {
+        background: none;
+        border: none;
+        padding: 0.5rem 0.75rem;
+        border-radius: 50px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 0.9rem;
+        color: $light-text;
+        transition: all $transition;
+        position: relative;
+        overflow: hidden;
+        
+        &::before {
+          content: '';
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          width: 0;
+          height: 0;
+          background: rgba(0, 0, 0, 0.05);
+          border-radius: 50%;
+          transform: translate(-50%, -50%);
+          transition: width 0.5s, height 0.5s;
+          z-index: -1;
+        }
+        
+        &:hover::before {
+          width: 150%;
+          height: 150%;
+        }
+        
+        .action-icon {
+          transition: transform 0.3s ease;
+        }
+        
+        .count {
+          font-size: 0.9rem;
+          font-weight: 500;
+        }
+        
+        &.animating .action-icon {
+          animation: pulse 0.5s ease-in-out;
+        }
+        
+        &.like-btn {
+          &:hover {
+            color: $like-color;
+          }
+          
+          &.active {
+            color: $like-color;
+            font-weight: 600;
+          }
+        }
+        
+        &.dislike-btn {
+          &:hover {
+            color: $dislike-color;
+          }
+          
+          &.active {
+            color: $dislike-color;
+            font-weight: 600;
+          }
+        }
+        
+        &.share-btn {
+          &:hover {
+            color: $share-color;
+          }
+        }
+        
+        &.bookmark-btn {
+          &:hover {
+            color: $bookmark-color;
+          }
+          
+          &.active {
+            color: $bookmark-color;
+            font-weight: 600;
+          }
+        }
+      }
+    }
+  }
+}
+
+// Container styles to ensure full width
+.content-container {
+  display: flex;
+  width: 100%;
+  padding: 0;
+}
+
+.main-content {
+  flex: 1;
+  padding: 0;
+}
+
+// Specific card types
+.education-card {
+  border-left: 4px solid $accent-color;
+  background: linear-gradient(to right, rgba($accent-color, 0.03), rgba($accent-color, 0.01), $card-bg);
+}
+
+// Animations
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.4);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+// Responsive adjustments
+@media (max-width: 1200px) {
+  .card {
+    margin-bottom: 1.25rem; // Adjusted for medium screens
+  }
+}
+
+@media (max-width: 768px) {
+  .card {
+    margin-bottom: 1rem; // Adjusted for tablets
+    
+    .card-content {
+      padding: 1.25rem;
+      
+      .card-header h3 {
+        font-size: 1.1rem;
+      }
+    }
+    
+    .card-actions {
+      flex-wrap: wrap;
+      
+      .action-wrapper {
+        margin-bottom: 0.5rem;
+        
+        .action-btn {
+          justify-content: center;
+          padding: 0.4rem 0.6rem;
+          
+          .count {
+            font-size: 0.8rem;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .card {
+    margin-bottom: 0.75rem; // Adjusted for mobile devices
+    
+    .card-content {
+      padding: 1rem;
+    }
+    
+    .card-actions {
+      .action-wrapper {
+        .action-btn {
+          padding: 0.3rem 0.5rem;
+          
+          span:not(.count) {
+            display: none;
+          }
+        }
+      }
+    }
+  }
+}

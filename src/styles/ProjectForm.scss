@@ -1,0 +1,119 @@
+// Variables for consistent styling
+$primary-color: #007bff;
+$secondary-color: #0056b3;
+$background-color: #f9f9f9;
+$border-color: #ccc;
+$border-radius: 8px;
+$spacing: 15px;
+$font-size: 16px;
+
+.project-form {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: $spacing;
+  border: 1px solid $border-color;
+  border-radius: $border-radius;
+  background-color: $background-color;
+
+  h2 {
+    text-align: center;
+    margin-bottom: $spacing * 1.5;
+    font-size: $font-size * 1.5;
+    color: $primary-color;
+  }
+
+  .form-group {
+    margin-bottom: $spacing;
+
+    label {
+      display: block;
+      margin-bottom: $spacing / 2;
+      font-weight: bold;
+      font-size: $font-size;
+    }
+
+    input,
+    textarea,
+    select {
+      width: 100%;
+      padding: $spacing / 2;
+      border: 1px solid $border-color;
+      border-radius: $border-radius / 2;
+      font-size: $font-size;
+      transition: border-color 0.3s ease;
+
+      &:focus {
+        border-color: $primary-color;
+        outline: none;
+      }
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+  }
+
+  button {
+    width: 100%;
+    padding: $spacing / 2;
+    background-color: $primary-color;
+    color: white;
+    border: none;
+    border-radius: $border-radius / 2;
+    font-size: $font-size;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+
+    &:hover {
+      background-color: $secondary-color;
+    }
+  }
+
+  // Responsive adjustments
+  @media (max-width: 768px) {
+    padding: $spacing / 2;
+
+    h2 {
+      font-size: $font-size * 1.25;
+    }
+
+    .form-group {
+      label {
+        font-size: $font-size * 0.9;
+      }
+
+      input,
+      textarea,
+      select {
+        font-size: $font-size * 0.9;
+      }
+    }
+
+    button {
+      font-size: $font-size * 0.9;
+    }
+  }
+
+  @media (max-width: 480px) {
+    h2 {
+      font-size: $font-size;
+    }
+
+    .form-group {
+      label {
+        font-size: $font-size * 0.8;
+      }
+
+      input,
+      textarea,
+      select {
+        font-size: $font-size * 0.8;
+      }
+    }
+
+    button {
+      font-size: $font-size * 0.8;
+    }
+  }
+}

@@ -1,0 +1,134 @@
+.register-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  padding: 40px;
+  max-width: 1200px;
+  margin: 0 auto;
+  background-color: #f3f3f3;
+  gap: 20px;
+
+  .info-section, .register-container {
+    flex: 1;
+    min-width: 350px;
+    padding: 20px;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+    animation: fadeInUp 0.8s ease-out;
+    transition: transform 0.3s ease;
+
+    &:hover {
+      transform: translateY(-5px);
+    }
+
+    h3 {
+      color: #006600;
+      margin-bottom: 15px;
+      text-align: center;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+
+      li {
+        margin-bottom: 10px;
+        font-size: 14px;
+        color: #333;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        transition: transform 0.3s;
+
+        &:hover {
+          transform: scale(1.02);
+        }
+
+        strong {
+          color: #BB0000;
+        }
+      }
+    }
+  }
+
+  .register-container {
+    max-width: 400px;
+    text-align: center;
+    padding: 30px;
+
+    h2 {
+      margin-bottom: 20px;
+      color: #000;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+
+      .form-group {
+        text-align: left;
+
+        label {
+          font-size: 14px;
+          font-weight: bold;
+          color: #555;
+        }
+
+        input, select {
+          width: 100%;
+          padding: 12px;
+          margin-top: 5px;
+          border: 1px solid #ccc;
+          border-radius: 8px;
+          font-size: 16px;
+          transition: box-shadow 0.3s;
+
+          &:focus {
+            box-shadow: 0 0 8px rgba(0, 102, 0, 0.3);
+            outline: none;
+          }
+        }
+
+        .error {
+          color: #BB0000;
+          font-size: 12px;
+        }
+      }
+
+      button {
+        background: #BB0000;
+        color: white;
+        padding: 12px;
+        border: none;
+        cursor: pointer;
+        border-radius: 8px;
+        font-size: 16px;
+        transition: background 0.3s, transform 0.2s;
+
+        &:hover {
+          background: #9c0826;
+          transform: scale(1.05);
+        }
+
+        &:disabled {
+          background: #ccc;
+          cursor: not-allowed;
+        }
+      }
+    }
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

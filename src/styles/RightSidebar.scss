@@ -1,0 +1,136 @@
+// Import variables
+@import 'variables';
+
+// Right sidebar styles
+.right-sidebar {
+  width: $right-sidebar-width;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  right: 0;
+  background: $secondary-color;
+  z-index: 10;
+  border-left: 1px solid $hover-color;
+  box-shadow: -2px 0 10px rgba(0, 0, 0, 0.2);
+  transition: transform $transition, right $transition;
+
+  .sidebar-content {
+    height: 100%;
+    padding: 1.5rem;
+    overflow-y: auto;
+
+    // Hide scrollbar but keep functionality
+    &::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: rgba(255, 255, 255, 0.2);
+      border-radius: 20px;
+    }
+
+    h2 {
+      font-size: 1.5rem;
+      margin-bottom: 1.5rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 2px solid $accent-color;
+      color: $text-color;
+    }
+
+    .rights-quick-view {
+      .rights-item {
+        background: lighten($secondary-color, 5%);
+        padding: 1.25rem;
+        margin-bottom: 1.25rem;
+        border-radius: 12px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        transition: transform $transition, box-shadow $transition;
+        animation: fadeIn 0.3s ease-in-out;
+
+        &:hover {
+          transform: translateY(-5px);
+          box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        h4 {
+          color: $accent-color;
+          margin-top: 0;
+          margin-bottom: 0.75rem;
+          font-size: 1.1rem;
+        }
+
+        p {
+          font-size: 0.9rem;
+          color: #ccc;
+          margin-bottom: 0.75rem;
+          line-height: 1.5;
+        }
+
+        .view-more-btn {
+          background: transparent;
+          color: $accent-color;
+          border: 2px solid $accent-color;
+          padding: 8px 16px;
+          border-radius: 8px;
+          cursor: pointer;
+          font-size: 0.9rem;
+          font-weight: 500;
+          transition: all $transition;
+
+          &:hover {
+            background: $accent-color;
+            color: $text-color;
+          }
+        }
+      }
+    }
+  }
+}
+
+// Hidden state for right sidebar
+.right-sidebar.hidden {
+  transform: translateX(100%);
+}
+
+// Fade-in animation
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// Media queries for tablet and mobile
+@media (max-width: 1200px) {
+  .right-sidebar {
+    width: 280px; // Slightly narrower on tablets
+  }
+}
+
+@media (max-width: 768px) {
+  .right-sidebar {
+    width: 100%;
+    max-width: 320px;
+  }
+  
+  // Add a close button for mobile
+  .close-sidebar {
+    display: block;
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: none;
+    border: none;
+    color: $text-color;
+    font-size: 1.5rem;
+    cursor: pointer;
+  }
+}

@@ -1,0 +1,161 @@
+// Import variables
+@import 'variables';
+
+// Left sidebar styles
+.left-sidebar {
+  width: $left-sidebar-width;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background: $secondary-color;
+  z-index: 10;
+  border-right: 1px solid $hover-color;
+  transition: width $transition;
+  overflow: hidden;
+  
+  .sidebar-content {
+    height: 100%;
+    padding: 1rem;
+    overflow-y: auto;
+    
+    // Hide scrollbar but keep functionality
+    &::-webkit-scrollbar {
+      width: 6px;
+    }
+    
+    &::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    
+    &::-webkit-scrollbar-thumb {
+      background-color: rgba(255, 255, 255, 0.2);
+      border-radius: 20px;
+    }
+    
+    .app-name {
+      font-size: 1.5rem;
+      margin-bottom: 2rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid $hover-color;
+      color: $accent-color;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+
+      li {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 12px;
+        margin-bottom: 5px;
+        cursor: pointer;
+        border-radius: 8px;
+        transition: background $transition;
+
+        &:hover {
+          background: $hover-color;
+        }
+
+        &.active {
+          background: $active-color;
+          border-left: 3px solid $accent-color;
+        }
+
+        svg {
+          font-size: 1.2rem;
+          min-width: 1.2rem; // Prevent icon from shrinking
+        }
+
+        span {
+          font-size: 1rem;
+          white-space: nowrap;
+        }
+        
+        &.post-btn {
+          margin-top: 2rem;
+          background: $accent-color;
+          color: $text-color;
+          text-align: center;
+          justify-content: center;
+          
+          &:hover {
+            background: darken($accent-color, 10%);
+          }
+        }
+      }
+    }
+  }
+}
+
+// Collapsed state
+.left-sidebar.collapsed {
+  width: $sidebar-collapsed-width;
+  
+  .sidebar-content {
+    .app-name {
+      text-align: center;
+      font-size: 1.2rem;
+    }
+    
+    ul li {
+      justify-content: center;
+      
+      span {
+        display: none;
+      }
+      
+      &.post-btn span {
+        display: none;
+      }
+    }
+  }
+}
+
+// Media queries for mobile
+@media (max-width: 768px) {
+  .left-sidebar {
+    width: $sidebar-collapsed-width;
+    
+    .sidebar-content {
+      .app-name {
+        font-size: 1.2rem;
+        text-align: center;
+      }
+      
+      ul li {
+        justify-content: center;
+        
+        span {
+          display: none;
+        }
+        
+        &.post-btn {
+          padding: 10px;
+          
+          span {
+            display: none;
+          }
+        }
+      }
+    }
+  }
+  
+  // Show sidebar when expanded class is added (via JavaScript)
+  .left-sidebar.expanded {
+    width: 250px;
+    
+    .sidebar-content {
+      ul li {
+        justify-content: flex-start;
+        
+        span {
+          display: inline;
+        }
+      }
+    }
+  }
+}
