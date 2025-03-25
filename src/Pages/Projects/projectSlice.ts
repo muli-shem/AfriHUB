@@ -6,11 +6,18 @@ import CloudinaryService from '../../cloudinary/cloudinary';
 // Define types for interactions
 interface Comment {
   id?: number;
-  post_id: number;
+  project_id: number;
   user_id: number;
-  user_name?: string;
   content: string;
-  created_at?: string;
+}
+
+interface Feedback {
+  id?: number;
+  title: string;
+  description: string;
+  evidence_url?: string;
+  reported_by: number;
+  project_id: number;
 }
 
 // Enhanced Project type with interaction data
@@ -31,20 +38,13 @@ interface Project {
   
   // Interaction-related fields
   comments?: Comment[];
+  feedbacks?: Feedback[];
   likeCount: number;
   loveCount: number;
   dislikeCount: number;
   userLiked: boolean;
   userLoved: boolean;
   userDisliked: boolean;
-}
-
-interface Feedback {
-  title: string;
-  description: string;
-  evidence_url?: string;
-  reported_by: number;
-  project_id: number;
 }
 
 // Define the initial state
@@ -64,20 +64,23 @@ const initialState: ProjectState = {
   uploadError: null
 };
 
-
-// Async thunk to fetch projects with interaction data
+// Async thunk to fetch projects with comments and feedback
 export const fetchProjects = createAsyncThunk('projects/fetchProjects', async () => {
   const response = await axios.get(`${LocalURL}/projects`);
   const projects = response.data;
-  
-  // Fetch comments for each project
+
   const commentsResponse = await axios.get(`${LocalURL}/comments`);
-  const comments = commentsResponse.data || [];
-  
-  // Initialize projects with interaction data
+  console.log("Comments API Response:", commentsResponse.data);
+  const comments = Array.isArray(commentsResponse.data) ? commentsResponse.data : [];
+
+  const feedbackResponse = await axios.get(`${LocalURL}/feedback`);
+  console.log("Feedback API Response:", feedbackResponse.data);
+  const feedbacks = Array.isArray(feedbackResponse.data) ? feedbackResponse.data : [];
+
   return projects.map((project: Project) => ({
     ...project,
-    comments: comments.filter((comment: Comment) => comment.post_id === project.id),
+    comments: comments.filter((comment: Comment) => comment.project_id === project.id),
+    feedbacks: feedbacks.filter((feedback: Feedback) => feedback.project_id === project.id),
     likeCount: project.likeCount || 0,
     loveCount: project.loveCount || 0,
     dislikeCount: project.dislikeCount || 0,
@@ -87,54 +90,55 @@ export const fetchProjects = createAsyncThunk('projects/fetchProjects', async ()
   }));
 });
 
-// Async thunk to add a project
 export const addProject = createAsyncThunk('projects/addProject', async (project: Project) => {
   const response = await axios.post(`${LocalURL}/projects`, project);
   return response.data;
 });
-
 // Async thunk to add a comment
 export const addComment = createAsyncThunk('projects/addComment', 
-  async (comment: Comment) => {
-    const response = await axios.post(`${LocalURL}/comments`, comment);
-    
-    // Get user information to display in UI
-    try {
-      const userData = localStorage.getItem('user');
-      let userName = 'Anonymous';
-      
-      if (userData) {
-        const user = JSON.parse(userData);
-        userName = user.name || 'Anonymous';
-      }
-      
-      return { ...response.data, user_name: userName };
-    } catch (error) {
-      console.error('Error getting user data:', error);
-      return { ...response.data, user_name: 'Anonymous' };
-    }
+  async (comment: Omit<Comment, 'user_id'>) => {
+    const userId = Number(localStorage.getItem('userId'));
+    return axios.post(`${LocalURL}/comments`, { ...comment, user_id: userId }).then(res => res.data);
   }
 );
 
-// Async thunk to upload image for feedback
-export const uploadFeedbackImage = createAsyncThunk(
-  'projects/uploadFeedbackImage',
-  async (file: File) => {
-    const result = await CloudinaryService.uploadImage(file);
-    
-    if ('message' in result) {
-      throw new Error(result.message);
-    }
-    
-    return result.url;
-  }
-);
-
-// Async thunk to add feedback
+// Async thunk to add feedback with Cloudinary upload
 export const addFeedback = createAsyncThunk(
   'projects/addFeedback', 
-  async (feedback: Feedback) => {
-    const response = await axios.post(`${LocalURL}/feedback`, feedback);
+  async (feedback: Omit<Feedback, 'reported_by'>) => {
+    const userId = Number(localStorage.getItem('userId'));
+    let evidenceFile: File | null = null;
+
+    if (feedback.evidence_url) {
+      try {
+        const response = await fetch(feedback.evidence_url);
+        const blob = await response.blob();
+        evidenceFile = new File([blob], 'evidence.png', { type: blob.type });
+      } catch (error) {
+        console.error('Error fetching evidence file:', error);
+      }
+    }
+
+    let evidenceUrl = feedback.evidence_url;
+    if (evidenceFile) {
+      try {
+        const uploadResponse = await CloudinaryService.uploadImage(evidenceFile);
+        if ('url' in uploadResponse) {
+          evidenceUrl = uploadResponse.url;
+        } else {
+          throw new Error(uploadResponse.message);
+        }
+      } catch (error) {
+        console.error('Cloudinary upload failed:', error);
+        throw new Error('Failed to upload evidence');
+      }
+    }
+    
+    const response = await axios.post(`${LocalURL}/feedback`, { 
+      ...feedback, 
+      reported_by: userId,
+      evidence_url: evidenceUrl
+    });
     return response.data;
   }
 );
@@ -143,87 +147,25 @@ const projectSlice = createSlice({
   name: 'projects',
   initialState,
   reducers: {
-    // Frontend-only like functionality
-    toggleLike: (state, action: PayloadAction<{projectId: number, userId: number}>) => {
-      const { projectId } = action.payload;
-      // userId is not used in this function but is kept in the payload type for consistency
-      
-      const project = state.projects.find(p => p.id === projectId);
-      
+    toggleLike: (state, action: PayloadAction<number>) => {
+      const project = state.projects.find(p => p.id === action.payload);
       if (project) {
-        if (project.userLiked) {
-          project.likeCount = Math.max(0, project.likeCount - 1);
-          project.userLiked = false;
-        } else {
-          project.likeCount += 1;
-          project.userLiked = true;
-          
-          // Remove other reactions if present
-          if (project.userLoved) {
-            project.loveCount = Math.max(0, project.loveCount - 1);
-            project.userLoved = false;
-          }
-          if (project.userDisliked) {
-            project.dislikeCount = Math.max(0, project.dislikeCount - 1);
-            project.userDisliked = false;
-          }
-        }
+        project.userLiked = !project.userLiked;
+        project.likeCount += project.userLiked ? 1 : -1;
       }
     },
-    
-    // Frontend-only love functionality
-    toggleLove: (state, action: PayloadAction<{projectId: number, userId: number}>) => {
-      const { projectId } = action.payload;
-      // userId is not used in this function but is kept in the payload type for consistency
-      
-      const project = state.projects.find(p => p.id === projectId);
-      
+    toggleLove: (state, action: PayloadAction<number>) => {
+      const project = state.projects.find(p => p.id === action.payload);
       if (project) {
-        if (project.userLoved) {
-          project.loveCount = Math.max(0, project.loveCount - 1);
-          project.userLoved = false;
-        } else {
-          project.loveCount += 1;
-          project.userLoved = true;
-          
-          // Remove other reactions if present
-          if (project.userLiked) {
-            project.likeCount = Math.max(0, project.likeCount - 1);
-            project.userLiked = false;
-          }
-          if (project.userDisliked) {
-            project.dislikeCount = Math.max(0, project.dislikeCount - 1);
-            project.userDisliked = false;
-          }
-        }
+        project.userLoved = !project.userLoved;
+        project.loveCount += project.userLoved ? 1 : -1;
       }
     },
-    
-    // Frontend-only dislike functionality
-    toggleDislike: (state, action: PayloadAction<{projectId: number, userId: number}>) => {
-      const { projectId } = action.payload;
-      // userId is not used in this function but is kept in the payload type for consistency
-      
-      const project = state.projects.find(p => p.id === projectId);
-      
+    toggleDislike: (state, action: PayloadAction<number>) => {
+      const project = state.projects.find(p => p.id === action.payload);
       if (project) {
-        if (project.userDisliked) {
-          project.dislikeCount = Math.max(0, project.dislikeCount - 1);
-          project.userDisliked = false;
-        } else {
-          project.dislikeCount += 1;
-          project.userDisliked = true;
-          
-          // Remove other reactions if present
-          if (project.userLiked) {
-            project.likeCount = Math.max(0, project.likeCount - 1);
-            project.userLiked = false;
-          }
-          if (project.userLoved) {
-            project.loveCount = Math.max(0, project.loveCount - 1);
-            project.userLoved = false;
-          }
-        }
+        project.userDisliked = !project.userDisliked;
+        project.dislikeCount += project.userDisliked ? 1 : -1;
       }
     }
   },
@@ -243,34 +185,10 @@ const projectSlice = createSlice({
         state.error = action.error.message || 'Failed to fetch projects';
       })
       
-      // Add project
-      .addCase(addProject.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
-      .addCase(addProject.fulfilled, (state, action: PayloadAction<Project>) => {
-        state.loading = false;
-        // Initialize reaction counts and states
-        const newProject = {
-          ...action.payload,
-          likeCount: 0,
-          loveCount: 0,
-          dislikeCount: 0,
-          userLiked: false,
-          userLoved: false,
-          userDisliked: false
-        };
-        state.projects.push(newProject);
-      })
-      .addCase(addProject.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.error.message || 'Failed to add project';
-      })
-      
       // Add comment
       .addCase(addComment.fulfilled, (state, action: PayloadAction<Comment>) => {
-        const { post_id } = action.payload;
-        const project = state.projects.find(p => p.id === post_id);
+        const { project_id } = action.payload;
+        const project = state.projects.find(p => p.id === project_id);
         
         if (project) {
           if (!project.comments) {
@@ -280,22 +198,17 @@ const projectSlice = createSlice({
         }
       })
       
-      // Upload feedback image
-      .addCase(uploadFeedbackImage.pending, (state) => {
-        state.uploadingImage = true;
-        state.uploadError = null;
-      })
-      .addCase(uploadFeedbackImage.fulfilled, (state) => {
-        state.uploadingImage = false;
-      })
-      .addCase(uploadFeedbackImage.rejected, (state, action) => {
-        state.uploadingImage = false;
-        state.uploadError = action.error.message || 'Failed to upload image';
-      })
-      
-      // Feedback doesn't need to update UI state as it's just reported
-      .addCase(addFeedback.fulfilled, () => {
-        // No state changes needed
+      // Add feedback
+      .addCase(addFeedback.fulfilled, (state, action: PayloadAction<Feedback>) => {
+        const { project_id } = action.payload;
+        const project = state.projects.find(p => p.id === project_id);
+        
+        if (project) {
+          if (!project.feedbacks) {
+            project.feedbacks = [];
+          }
+          project.feedbacks.push(action.payload);
+        }
       });
   },
 });

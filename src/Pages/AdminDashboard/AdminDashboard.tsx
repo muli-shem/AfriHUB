@@ -1,113 +1,153 @@
-import { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { fetchPosts, addPost } from '../Dashboard/postSlice';
-import { fetchAllContent } from '../Education/contentSlice';
-import {  store } from '../../app/store';
+import React, { useState } from 'react';
+import "./adminstyles/adminDashboard.scss"
+import { 
+  LayoutDashboard, 
+  Users, 
+  Settings, 
+  FileText, 
+  BarChart, 
+  Shield, 
+  ChevronLeft, 
+  ChevronRight,
+  Bell,
+  Search,
+  Menu,
+  X
+} from 'lucide-react';
+import { Link, Outlet, NavLink } from 'react-router-dom';
 
-import LeftSidebar from '../../components/LeftSidebar';
-import RightSidebar from '../../components/RightSidebar';
-import MainContent from '../../components/MainContent';
+const AdminDashboard: React.FC = () => {
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
+  const [isNavOpen, setIsNavOpen] = useState(false);
 
-import '../../styles/Dashboard.scss';
-import UserNavbar from '../userNavbar';
+  const toggleSidebar = () => {
+    setIsSidebarCollapsed(!isSidebarCollapsed);
+  };
 
-const AdminDashboard = () => {
-  const dispatch = useDispatch<typeof store.dispatch>();
-  const [currentView, setCurrentView] = useState('home');
-  
-  // State for tracking user interactions
-  const [likedItems, setLikedItems] = useState<Record<string, boolean>>({});
-  const [dislikedItems, setDislikedItems] = useState<Record<string, boolean>>({});
-  const [bookmarkedItems, setBookmarkedItems] = useState<Record<string, boolean>>({});
+  const toggleNav = () => {
+    setIsNavOpen(!isNavOpen);
+  };
 
-  useEffect(() => {
-    dispatch(fetchPosts());
-  }, [dispatch]);
-
-  // Function to handle navigation
-  const handleNavigation = (view: string) => {
-    setCurrentView(view);
-    
-    // Load educational content when switching to that view
-    if (view === 'education') {
-      dispatch(fetchAllContent());
+  const sidebarItems = [
+    { 
+      icon: <LayoutDashboard />, 
+      label: 'Dashboard', 
+      path: '/admin/dashboard' 
+    },
+    { 
+      icon: <Users />, 
+      label: 'User Management', 
+      path: '/admin/users' 
+    },
+    { 
+      icon: <BarChart />, 
+      label: 'Analytics', 
+      path: '/admin/analytics' 
+    },
+    { 
+      icon: <FileText />, 
+      label: 'Content', 
+      path: '/admin/content' 
+    },
+    { 
+      icon: <Shield />, 
+      label: 'Access Control', 
+      path: '/admin/access' 
+    },
+    { 
+      icon: <Settings />, 
+      label: 'Settings', 
+      path: '/admin/settings' 
     }
-  };
+  ];
 
-  // Functions to handle interactions
-  const handleLike = (id: string) => {
-    setLikedItems(prev => {
-      const newState = { ...prev };
-      newState[id] = !prev[id];
-      // Remove dislike if liking
-      if (newState[id]) {
-        setDislikedItems(prevDislikes => {
-          const newDislikes = { ...prevDislikes };
-          delete newDislikes[id];
-          return newDislikes;
-        });
-      }
-      return newState;
-    });
-  };
-
-  const handleDislike = (id: string) => {
-    setDislikedItems(prev => {
-      const newState = { ...prev };
-      newState[id] = !prev[id];
-      // Remove like if disliking
-      if (newState[id]) {
-        setLikedItems(prevLikes => {
-          const newLikes = { ...prevLikes };
-          delete newLikes[id];
-          return newLikes;
-        });
-      }
-      return newState;
-    });
-  };
-
-  const handleBookmark = (id: string) => {
-    setBookmarkedItems(prev => ({
-      ...prev,
-      [id]: !prev[id]
-    }));
-  };
-
-  const handleAddPost = () => {
-    const content = prompt('Enter your post content:');
-    if (content) {
-      dispatch(addPost(content));
-    }
-  };
+  const internalNavItems = [
+    { label: 'Overview', path: '/admin/dashboard/overview' },
+    { label: 'Reports', path: '/admin/dashboard/reports' },
+    { label: 'Performance', path: '/admin/dashboard/performance' },
+    { label: 'Insights', path: '/admin/dashboard/insights' }
+  ];
 
   return (
+    <div className="admin-dashboard">
+      {/* Full-width Navbar */}
+      <div className="full-width-navbar">
+        <div className="navbar-left">
+          <button 
+            className="sidebar-toggle"
+            onClick={toggleSidebar}
+          >
+            {isSidebarCollapsed ? <ChevronRight /> : <ChevronLeft />}
+          </button>
+          
+          <div className="logo">AfriVoice Admin</div>
+        </div>
 
-     <div className="dashboard-container">
-      {/* Add the UserNavbar at the top */}
-      <UserNavbar handleNavigation={handleNavigation} />
+        <div className="navbar-center">
+          <div className="search-container">
+            <Search className="search-icon" />
+            <input 
+              type="text" 
+              placeholder="Search dashboard" 
+            />
+          </div>
+        </div>
+
+        <div className="navbar-right">
+          <div className="notification-icon">
+            <Bell />
+            <div className="badge">3</div>
+          </div>
+
+          <div className="mobile-nav-toggle" onClick={toggleNav}>
+            {isNavOpen ? <X /> : <Menu />}
+          </div>
+
+          <div className="user-profile"></div>
+        </div>
+      </div>
 
       <div className="dashboard-content">
-        <LeftSidebar
-          currentView={currentView}
-          handleNavigation={handleNavigation}
-          handleAddPost={handleAddPost}
-        />
+        {/* Sidebar */}
+        <div className={`sidebar ${isSidebarCollapsed ? 'collapsed' : ''}`}>
+          <div className="sidebar-menu">
+            {sidebarItems.map((item) => (
+              <Link 
+                key={item.path} 
+                to={item.path} 
+                className="menu-item"
+              >
+                {item.icon}
+                {!isSidebarCollapsed && (
+                  <span className="menu-item-label">{item.label}</span>
+                )}
+              </Link>
+            ))}
+          </div>
+        </div>
 
-        <MainContent
-          currentView={currentView}
-          likedItems={likedItems}
-          dislikedItems={dislikedItems}
-          bookmarkedItems={bookmarkedItems}
-          handleLike={handleLike}
-          handleDislike={handleDislike}
-          handleBookmark={handleBookmark}
-          handleNavigation={handleNavigation}
-        />
+        {/* Main Content Area */}
+        <div className="main-content">
+          {/* Internal Navigation */}
+          <div className="internal-nav">
+            {internalNavItems.map((item) => (
+              <NavLink 
+                key={item.path}
+                to={item.path}
+                className={({ isActive }) => 
+                  isActive ? 'nav-item active' : 'nav-item'
+                }
+              >
+                {item.label}
+              </NavLink>
+            ))}
+          </div>
 
-        <RightSidebar
-          handleNavigation={handleNavigation}
-        />
+          {/* Content Area */}
+          <div className="content-area">
+            <Outlet />
+          </div>
+        </div>
       </div>
     </div>
   );
