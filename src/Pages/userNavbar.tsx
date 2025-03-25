@@ -1,37 +1,51 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import { FaUserCircle, FaBell, FaCog, FaSignOutAlt } from "react-icons/fa";
-import "../styles/UserNavbar.scss"; // Ensure the path is correct
+import { FaUserCircle, FaBell, FaCog, FaSignOutAlt, FaBars } from "react-icons/fa";
+import "../styles/UserNavbar.scss";
 
 interface UserNavbarProps {
-  handleNavigation: (view: string) => void; // Add this prop
+  handleNavigation: (view: string) => void;
 }
 
 const UserNavbar: React.FC<UserNavbarProps> = ({ handleNavigation }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
   };
 
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
+  };
+
+  const handleMobileNavigation = (view: string) => {
+    handleNavigation(view);
+    setIsMobileMenuOpen(false);
+  };
+
   return (
     <nav className="user-navbar">
       <div className="navbar-container">
-        {/* Logo */}
-        <Link to="/" className="logo">
-          AfriVoice Hub
-        </Link>
+        {/* Mobile Menu Toggle */}
+        <div className="mobile-menu-toggle" onClick={toggleMobileMenu}>
+          <FaBars />
+        </div>
 
-        {/* Navigation Links */}
-        <ul className="nav-links">
+        {/* Logo */}
+        <div className="logo">
+          AfriVoice Hub
+        </div>
+
+        {/* Navigation Links - Desktop and Mobile */}
+        <ul className={`nav-links ${isMobileMenuOpen ? 'mobile-open' : ''}`}>
           <li>
-            <button onClick={() => handleNavigation("dashboard")}>Dashboard</button>
+            <a onClick={() => handleMobileNavigation("dashboard")}>Dashboard</a>
           </li>
           <li>
-            <button onClick={() => handleNavigation("education")}>Education</button>
+            <a onClick={() => handleMobileNavigation("education")}>Education</a>
           </li>
           <li>
-            <button onClick={() => handleNavigation("content")}>Create Civic Content</button>
+            <a onClick={() => handleMobileNavigation("content")}>Create Civic Content</a>
           </li>
         </ul>
 
@@ -40,23 +54,24 @@ const UserNavbar: React.FC<UserNavbarProps> = ({ handleNavigation }) => {
           {/* Notifications */}
           <div className="notification-icon">
             <FaBell />
-            <span className="notification-badge">3</span> {/* Notification count */}
+            <span className="notification-badge">3</span>
           </div>
 
           {/* Profile Dropdown */}
           <div className="profile-dropdown" onClick={toggleDropdown}>
             <FaUserCircle className="profile-icon" />
+            
             {isDropdownOpen && (
               <div className="dropdown-menu">
-                <Link to="/profile" className="dropdown-item">
+                <a className="dropdown-item" onClick={() => handleNavigation("profile")}>
                   <FaUserCircle /> Profile
-                </Link>
-                <Link to="/settings" className="dropdown-item">
+                </a>
+                <a className="dropdown-item" onClick={() => handleNavigation("settings")}>
                   <FaCog /> Settings
-                </Link>
-                <div className="dropdown-item">
+                </a>
+                <a className="dropdown-item" onClick={() => handleNavigation("logout")}>
                   <FaSignOutAlt /> Logout
-                </div>
+                </a>
               </div>
             )}
           </div>

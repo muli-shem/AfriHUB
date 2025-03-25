@@ -4,6 +4,9 @@ import { AppDispatch } from '../../app/store';
 import { addProject } from './projectSlice';
 import CloudinaryService from '../../cloudinary/cloudinary';
 import '../../styles/ProjectForm.scss';
+import Footer from '../Footer';
+import UserNavbar from '../userNavbar';
+import Navbar from '../../components/Navbar';
 
 const ProjectForm: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>(); // Type your dispatch
@@ -81,6 +84,8 @@ const ProjectForm: React.FC = () => {
   };
 
   return (
+    <div>
+      <Navbar/>
     <form onSubmit={handleSubmit} className="project-form">
       <h2>Add New Project</h2>
       {uploadError && <div className="error-message">{uploadError}</div>}
@@ -138,6 +143,8 @@ const ProjectForm: React.FC = () => {
       </div>
       <button type="submit">Add Project</button>
     </form>
+    <Footer/>
+    </div>
   );
 };
 

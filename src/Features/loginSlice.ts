@@ -40,6 +40,7 @@ export const loginUser = createAsyncThunk(
                 const token = response.data.msg.token;
                 const userId = response.data.msg.user.id.toString();
                 const userRole = response.data.msg.user.role;
+                const username = response.data.msg.user.username;
                 
                 console.log("Found token:", token);
                 console.log("Found userId:", userId);
@@ -48,6 +49,7 @@ export const loginUser = createAsyncThunk(
                 // Store in localStorage
                 localStorage.setItem("token", token);
                 localStorage.setItem("userId", userId);
+                localStorage.setItem("username", username);
                 
                 if (userRole) {
                     localStorage.setItem("userRole", userRole);

@@ -5,6 +5,8 @@ import { useNavigate } from "react-router-dom"; // Import useNavigate
 import { registerUser } from "../Features/registerSlice"; // Import registerUser
 import { RootState, AppDispatch } from "../app/store"; // Import AppDispatch
 import "../styles/Register.scss"; // Ensure the path is correct
+import Navbar from "../components/Navbar";
+import Footer from "../Pages/Footer";
 
 const Register: React.FC = () => {
   const {
@@ -29,6 +31,8 @@ const Register: React.FC = () => {
   };
 
   return (
+    <div>
+      <Navbar />
     <div className="register-page">
       {/* Registration Form */}
       <div className="register-container">
@@ -92,6 +96,8 @@ const Register: React.FC = () => {
           </button>
         </form>
       </div>
+    </div>
+    <Footer/>
     </div>
   );
 };

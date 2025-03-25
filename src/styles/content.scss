@@ -9,7 +9,7 @@ $error-color: #e74c3c;
 $shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 
 // Mixins
-@mixin button($bg-color, $text-color: white) {
+@mixin button($bg-color, $text-color: rgb(10, 10, 10)) {
   background-color: $bg-color;
   color: $text-color;
   border: none;

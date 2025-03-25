@@ -1,134 +1,170 @@
 .user-navbar {
-    background-color: #1a1a2e; // Dark blue
-    color: #ffffff;
-    padding: 1rem 2rem;
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-  
-    .navbar-container {
+  background-color: #1a1a2e; // Dark blue
+  color: #ffffff;
+  padding: 1rem 2rem;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+
+  .navbar-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative;
+
+    // Mobile menu toggle (hidden by default)
+    .mobile-menu-toggle {
+      display: none;
+      cursor: pointer;
+      font-size: 1.5rem;
+    }
+
+    .logo {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #ffffff;
+      text-decoration: none;
+      transition: color 0.3s ease;
+
+      &:hover {
+        color: #f9a826; // Orange
+      }
+    }
+
+    .nav-links {
+      list-style: none;
       display: flex;
-      justify-content: space-between;
       align-items: center;
-      max-width: 1200px;
-      margin: 0 auto;
-  
-      .logo {
-        font-size: 1.5rem;
-        font-weight: bold;
-        color: #ffffff;
-        text-decoration: none;
-        transition: color 0.3s ease;
-  
-        &:hover {
-          color: #f9a826; // Orange
+      gap: 1.5rem;
+      margin: 0;
+      padding: 0;
+
+      li {
+        a {
+          text-decoration: none;
+          color: #ffffff;
+          font-size: 1rem;
+          cursor: pointer;
+          transition: color 0.3s ease;
+
+          &:hover {
+            color: #f9a826; // Orange
+          }
         }
       }
-  
-      .nav-links {
-        list-style: none;
-        display: flex;
-        align-items: center;
-        gap: 1.5rem;
-        margin: 0;
-        padding: 0;
-  
-        li {
-          a {
+    }
+
+    .user-actions {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+
+      .notification-icon {
+        position: relative;
+        cursor: pointer;
+
+        .notification-badge {
+          position: absolute;
+          top: -5px;
+          right: -5px;
+          background-color: #bb0000; // Red
+          color: white;
+          font-size: 0.75rem;
+          padding: 0.25rem 0.5rem;
+          border-radius: 50%;
+        }
+      }
+
+      .profile-dropdown {
+        position: relative;
+        cursor: pointer;
+
+        .profile-icon {
+          font-size: 1.5rem;
+          transition: color 0.3s ease;
+
+          &:hover {
+            color: #f9a826; // Orange
+          }
+        }
+
+        .dropdown-menu {
+          position: absolute;
+          top: 100%;
+          right: 0;
+          background-color: #ffffff;
+          border: 1px solid #cccccc;
+          border-radius: 5px;
+          box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+          z-index: 1000;
+          min-width: 150px;
+
+          .dropdown-item {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem 1rem;
+            color: #333333;
             text-decoration: none;
-            color: #ffffff;
-            font-size: 1rem;
-            transition: color 0.3s ease;
-  
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+
             &:hover {
-              color: #f9a826; // Orange
+              background-color: #f9f9f9;
             }
-          }
-        }
-      }
-  
-      .user-actions {
-        display: flex;
-        align-items: center;
-        gap: 1.5rem;
-  
-        .notification-icon {
-          position: relative;
-          cursor: pointer;
-  
-          .notification-badge {
-            position: absolute;
-            top: -5px;
-            right: -5px;
-            background-color: #bb0000; // Red
-            color: white;
-            font-size: 0.75rem;
-            padding: 0.25rem 0.5rem;
-            border-radius: 50%;
-          }
-        }
-  
-        .profile-dropdown {
-          position: relative;
-          cursor: pointer;
-  
-          .profile-icon {
-            font-size: 1.5rem;
-            transition: color 0.3s ease;
-  
-            &:hover {
-              color: #f9a826; // Orange
-            }
-          }
-  
-          .dropdown-menu {
-            position: absolute;
-            top: 100%;
-            right: 0;
-            background-color: #ffffff;
-            border: 1px solid #cccccc;
-            border-radius: 5px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            z-index: 1000;
-            min-width: 150px;
-  
-            .dropdown-item {
-              display: flex;
-              align-items: center;
-              padding: 0.75rem 1rem;
-              color: #333333;
-              text-decoration: none;
-              transition: background-color 0.3s ease;
-  
-              &:hover {
-                background-color: #f9f9f9;
-              }
-  
-              svg {
-                margin-right: 0.5rem;
-              }
+
+            svg {
+              margin-right: 0.5rem;
             }
           }
         }
       }
     }
-  
-    /* Responsive Design */
+
+    /* Responsive Design for Mobile */
     @media (max-width: 768px) {
-      .navbar-container {
+      .mobile-menu-toggle {
+        display: block;
+        position: absolute;
+        left: 0;
+      }
+
+      .logo {
+        margin: 0 auto;
+      }
+
+      .nav-links {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background-color: #1a1a2e;
         flex-direction: column;
-        align-items: flex-start;
-  
-        .nav-links {
-          flex-direction: column;
-          align-items: flex-start;
-          gap: 1rem;
-          margin-top: 1rem;
+        padding: 1rem;
+
+        &.mobile-open {
+          display: flex;
         }
-  
-        .user-actions {
-          margin-top: 1rem;
+
+        li {
+          width: 100%;
+          margin-bottom: 0.5rem;
+
+          a {
+            display: block;
+            padding: 0.5rem;
+            text-align: center;
+          }
         }
+      }
+
+      .user-actions {
+        position: absolute;
+        right: 0;
+        top: 0;
       }
     }
   }
+}

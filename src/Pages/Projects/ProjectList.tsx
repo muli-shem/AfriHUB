@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchProjects, addComment, toggleLike, toggleLove, toggleDislike, addFeedback } from './projectSlice';
 import { RootState } from '../../app/store';
-import { FaHeart, FaRegHeart, FaThumbsUp, FaRegThumbsUp, FaThumbsDown, FaRegThumbsDown, FaComment, FaFlag } from 'react-icons/fa';
+import { FaHeart, FaRegHeart, FaThumbsUp, FaRegThumbsUp, FaThumbsDown, FaRegThumbsDown, FaComment, FaFlag, FaImage } from 'react-icons/fa';
 import '../../styles/ProjecList.scss';
 
 interface User {
   id: number;
-  name: string;
+  username: string;
 }
 
 const ProjectList: React.FC = () => {
@@ -26,40 +26,70 @@ const ProjectList: React.FC = () => {
   const [feedbackTitle, setFeedbackTitle] = useState('');
   const [feedbackDescription, setFeedbackDescription] = useState('');
   const [feedbackEvidence, setFeedbackEvidence] = useState('');
+  const [feedbackImage, setFeedbackImage] = useState<File | null>(null);
+  
+  // Ref for file input
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Get user from localStorage
   useEffect(() => {
-    try {
-      const userData = localStorage.getItem('user');
-      if (userData) {
-        setCurrentUser(JSON.parse(userData)); 
-      }
-    } catch (error) {
-      console.error('Error getting user data from localStorage:', error);
+    const userId = localStorage.getItem('userId');
+    const username = localStorage.getItem('username');
+    
+    if (userId && username) {
+      setCurrentUser({
+        id: Number(userId),
+        username: username
+      });
     }
   }, []);
 
+  // Fetch projects and set up auto-refresh
   useEffect(() => {
-    dispatch(fetchProjects());
+    const fetchAndRefresh = () => {
+      dispatch(fetchProjects());
+    };
+
+    // Initial fetch
+    fetchAndRefresh();
+
+    // Set up periodic refresh every 60 seconds
+    const intervalId = setInterval(fetchAndRefresh, 60000);
+
+    // Cleanup interval on component unmount
+    return () => clearInterval(intervalId);
   }, [dispatch]);
 
-  // Function to handle like/love/dislike - now using the frontend-only toggle functions
+  // Function to handle image selection for feedback
+  const handleImageSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      setFeedbackImage(e.target.files[0]);
+    }
+  };
+
+  // Function to trigger file input
+  const triggerFileInput = () => {
+    fileInputRef.current?.click();
+  };
+
+  // Function to handle like/love/dislike
   const handleReaction = (projectId: number, reactionType: 'like' | 'love' | 'dislike') => {
-    if (!currentUser) {
+    const userId = localStorage.getItem('userId');
+    
+    if (!userId) {
       alert('Please log in to react to projects');
       return;
     }
-    
-    // Use the correct toggle action based on reaction type
+     
     switch(reactionType) {
       case 'like':
-        dispatch(toggleLike({ projectId, userId: currentUser.id }));
+        dispatch(toggleLike(projectId));
         break;
       case 'love':
-        dispatch(toggleLove({ projectId, userId: currentUser.id }));
+        dispatch(toggleLove(projectId));
         break;
       case 'dislike':
-        dispatch(toggleDislike({ projectId, userId: currentUser.id }));
+        dispatch(toggleDislike(projectId));
         break;
     }
   };
@@ -67,40 +97,107 @@ const ProjectList: React.FC = () => {
   // Function to handle comment submission
   const handleCommentSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!commentText.trim() || !activeCommentId || !currentUser) {
+    
+    const userId = localStorage.getItem('userId');
+    
+    if (!userId) {
+      alert('Please log in to add a comment');
+      return;
+    }
+    
+    if (!commentText.trim() || !activeCommentId) {
       return;
     }
     
     dispatch(addComment({
-      post_id: activeCommentId,
-      user_id: currentUser.id,
+      project_id: activeCommentId,
       content: commentText
     }));
     
     setCommentText('');
-    // Keep the comment section open to show the newly added comment
+    setActiveCommentId(null);
   };
 
   // Function to handle feedback submission
-  const handleFeedbackSubmit = (e: React.FormEvent) => {
+  const handleFeedbackSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!feedbackTitle.trim() || !feedbackDescription.trim() || !activeFeedbackId || !currentUser) {
+    
+    const userId = localStorage.getItem('userId');
+    
+    if (!userId) {
+      alert('Please log in to report an issue');
       return;
     }
     
-    dispatch(addFeedback({
-      title: feedbackTitle,
-      description: feedbackDescription,
-      evidence_url: feedbackEvidence,
-      reported_by: currentUser.id,
-      project_id: activeFeedbackId
-    }));
+    if (!feedbackTitle.trim() || !feedbackDescription.trim() || !activeFeedbackId) {
+      alert('Please fill in all required fields');
+      return;
+    }
     
-    // Reset form and close
-    setFeedbackTitle('');
-    setFeedbackDescription('');
-    setFeedbackEvidence('');
-    setActiveFeedbackId(null);
+    try {
+      await dispatch(addFeedback({
+        project_id: activeFeedbackId,
+        title: feedbackTitle,
+        description: feedbackDescription,
+        evidence_url: feedbackEvidence || undefined,
+        evidence_image: feedbackImage
+      })).unwrap();
+      
+      // Reset form
+      setFeedbackTitle('');
+      setFeedbackDescription('');
+      setFeedbackEvidence('');
+      setFeedbackImage(null);
+      setActiveFeedbackId(null);
+    } catch (error) {
+      console.error('Failed to submit feedback', error);
+      alert('Failed to submit feedback. Please try again.');
+    }
+  };
+
+  // Function to render feedbacks
+  const renderFeedbacks = (projectId: number) => {
+    const project = projects.find(p => p.id === projectId);
+    const feedbacks = project?.feedbacks || [];
+
+    return (
+      <div className="feedbacks-section">
+        <h4>Reported Issues</h4>
+        {feedbacks.length > 0 ? (
+          <div className="feedback-list">
+            {feedbacks.map((feedback) => (
+              <div key={feedback.id} className="feedback">
+                <div className="feedback-title">{feedback.title}</div>
+                <div className="feedback-description">{feedback.description}</div>
+                {feedback.evidence_image && (
+                  <div className="feedback-evidence">
+                    <div className="feedback-image">
+                      <img 
+                        src={feedback.evidence_image} 
+                        alt={`Evidence for ${feedback.title}`} 
+                      />
+                    </div>
+                  </div>
+                )}
+                {feedback.evidence_url && (
+                  <div className="feedback-external-link">
+                    <a 
+                      href={feedback.evidence_url} 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                    >
+                      External Evidence
+                    </a>
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        ) : (
+          <p>No issues reported for this project.</p>
+        )}
+      </div>
+    );
   };
 
   if (loading) return <div className="loading-container">Loading...</div>;
@@ -186,9 +283,8 @@ const ProjectList: React.FC = () => {
                     {project.comments && project.comments.length > 0 ? (
                       project.comments.map((comment) => (
                         <div key={comment.id} className="comment">
-                          <div className="comment-user">{comment.user_name}</div>
+                          <div className="comment-user">{comment.username || 'Anonymous'}</div>
                           <div className="comment-content">{comment.content}</div>
-                          <div className="comment-date">{new Date(comment.created_at || Date.now()).toLocaleDateString()}</div>
                         </div>
                       ))
                     ) : (
@@ -211,10 +307,13 @@ const ProjectList: React.FC = () => {
                   ) : (
                     <p className="login-message">Please log in to add a comment.</p>
                   )}
+
+                  {/* Render Feedbacks in Comments Section */}
+                  {renderFeedbacks(project.id!)}
                 </div>
               )}
               
-              {/* Feedback form */}
+              {/* Feedback section */}
               {activeFeedbackId === project.id && (
                 <div className="feedback-section">
                   <h4>Report an Issue</h4>
@@ -240,6 +339,22 @@ const ProjectList: React.FC = () => {
                         onChange={(e) => setFeedbackEvidence(e.target.value)}
                         placeholder="Evidence URL (optional)"
                       />
+                      <div className="image-upload-container">
+                        <input
+                          type="file"
+                          ref={fileInputRef}
+                          onChange={handleImageSelect}
+                          accept="image/*"
+                          style={{ display: 'none' }}
+                        />
+                        <button 
+                          type="button" 
+                          onClick={triggerFileInput} 
+                          className="image-upload-btn"
+                        >
+                          <FaImage /> {feedbackImage ? 'Image Selected' : 'Upload Image'}
+                        </button>
+                      </div>
                       <div className="feedback-buttons">
                         <button type="button" onClick={() => setActiveFeedbackId(null)}>
                           Cancel
