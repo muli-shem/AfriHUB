@@ -24,7 +24,7 @@ const Register: React.FC = () => {
   const onSubmit = async (data: any) => {
     try {
       await dispatch(registerUser(data)).unwrap(); // Use unwrap() to handle the promise
-      navigate("/dashboard"); // Navigate to dashboard on success
+      navigate("/login"); // Navigate to dashboard on success
     } catch (error: any) {
       console.error("Registration failed:", error.message || error);
     }
