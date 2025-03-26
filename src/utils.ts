@@ -1,2 +1,2 @@
 
-export const LocalURL = "http://localhost:8080/api";
+export const LocalURL = "https://afrivoicebackend.onrender.com/api";

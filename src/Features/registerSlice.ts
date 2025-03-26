@@ -1,11 +1,12 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
+import { LocalURL } from "../utils";
 
 export const registerUser = createAsyncThunk(
   "auth/registerUser",
   async (userData: any, { rejectWithValue }) => {
     try {
-      const response = await axios.post("http://localhost:8080/api/register", userData);
+      const response = await axios.post(`${LocalURL}/register`, userData);
       return response.data;
     } catch (error: any) {
       return rejectWithValue(error.response.data);

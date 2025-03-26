@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-
+import { LocalURL } from '../utils';
 // Define the shape of the auth state
 interface LoginState {
     token: string | null;
@@ -28,7 +28,7 @@ export const loginUser = createAsyncThunk(
             // Log the complete request
             console.log("Making request to:", "http://localhost:8080/api/login");
             
-            const response = await axios.post("http://localhost:8080/api/login", credentials);
+            const response = await axios.post(`${LocalURL}/login`, credentials);
             
             // Detailed response logging
             console.log("Full Response Object:", response);
