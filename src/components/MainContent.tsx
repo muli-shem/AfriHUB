@@ -1,3 +1,4 @@
+import React from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '../app/store';
 import EducationCard from '../Pages/Education/Education';
@@ -8,26 +9,41 @@ import ProjectList from '../Pages/Projects/ProjectList';
 
 interface MainContentProps {
   currentView: string;
-  likedItems: Record<string, boolean>;
-  dislikedItems: Record<string, boolean>;
-  bookmarkedItems: Record<string, boolean>;
-  handleLike: (id: string) => void;
-  handleDislike: (id: string) => void;
-  handleBookmark: (id: string) => void;
+  interactions: {
+    [contentType: string]: {
+      [contentId: string]: {
+        liked: boolean;
+        disliked: boolean;
+        bookmarked: boolean;
+      }
+    }
+  };
+  handleLike: (contentId: string, contentType: string) => void;
+  handleDislike: (contentId: string, contentType: string) => void;
+  handleBookmark: (contentId: string, contentType: string) => void;
   handleNavigation: (view: string) => void;
 }
 
-const MainContent = ({
+const MainContent: React.FC<MainContentProps> = ({
   currentView,
-  likedItems,
-  dislikedItems,
-  bookmarkedItems,
+  interactions,
   handleLike,
   handleDislike,
   handleBookmark,
-}: MainContentProps) => {
+}) => {
   const { posts, status, error } = useSelector((state: RootState) => state.posts);
   const educationContent = useSelector((state: RootState) => state.education.items);
+
+  // Function to get interaction state for a specific content item
+  const getInteractionState = (contentId: string, contentType: string) => {
+    const contentInteractions = interactions[contentType] || {};
+    const itemInteraction = contentInteractions[contentId] || {
+      liked: false,
+      disliked: false,
+      bookmarked: false
+    };
+    return itemInteraction;
+  };
 
   // Function to render the correct content based on currentView
   const renderContent = () => {
@@ -58,28 +74,37 @@ const MainContent = ({
               <p>Loading educational content...</p>
             ) : (
               <div className="education-cards">
-                {educationContent.map((content) => (
-                  <div className="card" key={content.id}>
-                    <h3>{content.title}</h3>
-                    <p>{content.content}</p>
-                    <EducationCard 
-                      content={{
-                        id: content.id.toString(),
-                        title: content.title,
-                        content: content.content,
-                        content_type: content.content_type,
-                        created_by: content.created_by.toString(),
-                        image_url: content.image_url || undefined
-                      }}
-                      isLiked={likedItems[content.id] || false}
-                      isDisliked={dislikedItems[content.id] || false}
-                      isBookmarked={bookmarkedItems[content.id] || false}
-                      onLike={() => handleLike(content.id.toString())}
-                      onDislike={() => handleDislike(content.id.toString())}
-                      onBookmark={() => handleBookmark(content.id.toString())}
-                    />
-                  </div>
-                ))}
+                {educationContent.map((content) => {
+                  const interactionState = getInteractionState(
+                    content.id.toString(), 
+                    'education'
+                  );
+                  
+                  return (
+                    <div className="card" key={content.id}>
+                      <h3>{content.title}</h3>
+                      <p>{content.content}</p>
+                      <EducationCard 
+                        content={{
+                          id: content.id.toString(),
+                          title: content.title,
+                          content: content.content,
+                          content_type: content.content_type,
+                          created_by: content.created_by.toString(),
+                          image_url: content.image_url || undefined
+                        }}
+                        {...{
+                          isLiked: interactionState.liked,
+                          isDisliked: interactionState.disliked,
+                          isBookmarked: interactionState.bookmarked,
+                          onLike: () => handleLike(content.id.toString(), 'education'),
+                          onDislike: () => handleDislike(content.id.toString(), 'education'),
+                          onBookmark: () => handleBookmark(content.id.toString(), 'education')
+                        }}
+                      />
+                    </div>
+                  );
+                })}
               </div>
             )}
           </section>
@@ -90,19 +115,28 @@ const MainContent = ({
           <section className="human-rights-content">
             <h2>Human Rights Information</h2>
             <div className="rights-cards">
-              {humanRightsContent.map((content) => (
-                <div className="card" key={content.id}>
-                   <h3>{content.title}</h3>
-                  <p>{content.content}</p>
-                  <HumanRightsCard 
-                    content={content}
-                    isLiked={likedItems[content.id] || false}
-                    isBookmarked={bookmarkedItems[content.id] || false}
-                    onLike={() => handleLike(content.id.toString())}
-                    onBookmark={() => handleBookmark(content.id.toString())}
-                  />
-                </div>
-              ))}
+              {humanRightsContent.map((content) => {
+                const interactionState = getInteractionState(
+                  content.id.toString(), 
+                  'humanrights'
+                );
+                
+                return (
+                  <div className="card" key={content.id}>
+                    <h3>{content.title}</h3>
+                    <p>{content.content}</p>
+                    <HumanRightsCard 
+                      content={content}
+                      {...{
+                        isLiked: interactionState.liked,
+                        isBookmarked: interactionState.bookmarked,
+                        onLike: () => handleLike(content.id.toString(), 'humanrights'),
+                        onBookmark: () => handleBookmark(content.id.toString(), 'humanrights')
+                      }}
+                    />
+                  </div>
+                );
+              })}
             </div>
           </section>
         );
@@ -111,7 +145,7 @@ const MainContent = ({
         return (
           <section className="explore-content">
             <h2>Explore Projects</h2>
-            <ProjectList /> {/* Render the ProjectList component */}
+            <ProjectList />
           </section>
         );
       

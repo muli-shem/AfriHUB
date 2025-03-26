@@ -5,7 +5,6 @@ import { addProject } from './projectSlice';
 import CloudinaryService from '../../cloudinary/cloudinary';
 import '../../styles/ProjectForm.scss';
 import Footer from '../Footer';
-import UserNavbar from '../userNavbar';
 import Navbar from '../../components/Navbar';
 
 const ProjectForm: React.FC = () => {
@@ -56,7 +55,16 @@ const ProjectForm: React.FC = () => {
         mediaUrl = uploadResult.url;
       }
 
-      const project = { ...formData, media_url: mediaUrl };
+      const project = { 
+        ...formData, 
+        media_url: mediaUrl,
+        likeCount: 0,
+        loveCount: 0,
+        dislikeCount: 0,
+        userLiked: false,
+        userLoved: false,
+        userDisliked: false
+      };
 
       await dispatch(addProject(project)).unwrap(); // Awaiting the promise for better error handling
       alert('Project added successfully!');
