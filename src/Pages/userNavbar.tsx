@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { FaUserCircle, FaBell, FaCog, FaSignOutAlt, FaBars } from "react-icons/fa";
-import "../styles/UserNavbar.scss";
+import "../styles/";
 
 interface UserNavbarProps {
   handleNavigation: (view: string) => void;
