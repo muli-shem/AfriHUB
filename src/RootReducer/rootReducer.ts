@@ -1,10 +1,10 @@
 import { combineReducers } from "@reduxjs/toolkit";
 import authReducer from "../Features/registerSlice"; // Import your authSlice
-import loginReducer  from "../Features/loginSlice";
-import postsReducer from "../Pages/Dashboard/postSlice"; // Import your postsSlice
+import loginReducer  from "../Features/loginSlice"; // Import your postsSlice
 import educationReducer from "../Pages/Education/contentSlice";
 import projectReducer from "../Pages/Projects/projectSlice";
 import userProfileReducer from "../Pages/Profile/profileSlice"
+import postsReducer from "../Pages/posts/postsSlice"
 
 
 // Define the root reducer

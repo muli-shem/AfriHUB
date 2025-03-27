@@ -14,8 +14,8 @@ const LeftSidebar = ({ currentView, handleNavigation, handleAddPost }: LeftSideb
         <h2 className="app-name">AfriVoice</h2>
         <ul>
           <li 
-            className={currentView === 'home' ? 'active' : ''} 
-            onClick={() => handleNavigation('home')}
+            className={currentView === 'explore' ? 'active' : ''} 
+            onClick={() => handleNavigation('explore')}
           >
             <FaHome /> <span>Home</span>
           </li>

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { fetchPosts, addPost } from '../Dashboard/postSlice';
+import { fetchPosts,createPost } from '../posts/postsSlice';
 import { fetchAllContent } from '../Education/contentSlice';
 import { store } from '../../app/store';
 import { useNavigate } from 'react-router-dom';
@@ -132,7 +132,7 @@ const Dashboard = () => {
   const handleAddPost = () => {
     const content = prompt('Enter your post content:');
     if (content) {
-      dispatch(addPost(content));
+      dispatch(createPost({ content }));
     }
   };
 
