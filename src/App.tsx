@@ -11,6 +11,7 @@ import AdminDashboard from "./Pages/AdminDashboard/AdminDashboard";
 import ProjectForm from "./Pages/Projects/ProjectForm";
 import ProjectList from "./Pages/Projects/ProjectList";
 import AdminRoutes from "./Pages/AdminDashboard/AdminRouters";
+import UserProfile from "./Pages/Profile/userProfile";
  
 
 const App: React.FC = () => {
@@ -31,6 +32,7 @@ const App: React.FC = () => {
             <Route path="/content" element={<EducationalContentForm />} />
             <Route path="/createproject" element={<ProjectForm/>} />
             <Route path="/projects" element={<ProjectList/>} />
+            <Route path="/profile" element={<UserProfile/>} />
           </Routes>
     </Router>
   );

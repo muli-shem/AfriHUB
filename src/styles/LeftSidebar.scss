@@ -118,44 +118,65 @@
 // Media queries for mobile
 @media (max-width: 768px) {
   .left-sidebar {
-    width: $sidebar-collapsed-width;
+    width: 100%;
+    height: 60px; // Reduced height for bottom bar
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    top: auto;
+    border-right: none;
+    border-top: 1px solid $hover-color;
+    z-index: 20;
     
     .sidebar-content {
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      padding: 0;
+      height: 100%;
+      
       .app-name {
-        font-size: 1.2rem;
-        text-align: center;
+        display: none; // Hide app name on mobile bottom bar
       }
       
-      ul li {
-        justify-content: center;
+      ul {
+        width: 100%;
+        display: flex;
+        justify-content: space-around;
         
-        span {
-          display: none;
-        }
-        
-        &.post-btn {
-          padding: 10px;
+        li {
+          flex: 1;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 8px;
+          margin: 0;
+          border-radius: 0;
+          
+          svg {
+            font-size: 1.5rem;
+          }
           
           span {
-            display: none;
+            display: none; // Hide text on mobile
+          }
+          
+          &.post-btn {
+            display: none; // Hide post button in bottom bar
+          }
+          
+          &.active {
+            border-left: none;
+            border-bottom: 3px solid $accent-color;
           }
         }
       }
     }
   }
   
-  // Show sidebar when expanded class is added (via JavaScript)
+  // Remove the expanded state logic as it's not needed
   .left-sidebar.expanded {
-    width: 250px;
-    
-    .sidebar-content {
-      ul li {
-        justify-content: flex-start;
-        
-        span {
-          display: inline;
-        }
-      }
-    }
+    width: 100%;
   }
 }

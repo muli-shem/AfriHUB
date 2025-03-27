@@ -1,4 +1,4 @@
-// Import variables from the variables file
+// Import variables
 @import 'variables';
 
 // Main content styles
@@ -97,7 +97,7 @@
     }
   }
   
-  // Card-based content (Education, Human Rights)
+  // Card-based content
   .education-cards, .rights-cards {
     .card {
       padding: 15px;
@@ -141,28 +141,71 @@
   }
 }
 
-// Animation for fade-in effect
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(5px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-// Media queries for responsive layout
-@media (max-width: 1200px) {
-  .main-content {
-    margin-right: 0;
-  }
-}
-
+// Media queries for mobile
 @media (max-width: 768px) {
+  .left-sidebar {
+    width: 100%;
+    height: 60px;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    top: auto;
+    border-right: none;
+    border-top: 1px solid $hover-color;
+    z-index: 20;
+    
+    .sidebar-content {
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      padding: 0;
+      height: 100%;
+      
+      .app-name {
+        display: none;
+      }
+      
+      ul {
+        width: 100%;
+        display: flex;
+        justify-content: space-around;
+        
+        li {
+          flex: 1;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 8px;
+          margin: 0;
+          border-radius: 0;
+          
+          svg {
+            font-size: 1.5rem;
+          }
+          
+          span {
+            display: none;
+          }
+          
+          &.post-btn {
+            display: none;
+          }
+          
+          &.active {
+            border-left: none;
+            border-bottom: 3px solid $accent-color;
+          }
+        }
+      }
+    }
+  }
+
   .main-content {
-    margin-left: $sidebar-collapsed-width;
+    margin-left: 0;
+    margin-right: 0;
+    margin-bottom: 60px;
+    height: calc(100vh - 60px);
     
     header {
       padding: 0 15px;
@@ -174,22 +217,20 @@
     
     .scrollable-content {
       padding: 0;
+      max-width: 100%;
+      height: 100%;
     }
   }
 }
 
-@media (max-width: 480px) {
-  .main-content {
-    margin-left: 0;
-    
-    .scrollable-content {
-      max-width: 100%;
-    }
-    
-    .posts, .education-content, .human-rights-content, .explore-content {
-      h2 {
-        padding: 0 10px;
-      }
-    }
+// Animation for fade-in effect
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }

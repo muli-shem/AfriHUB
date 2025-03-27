@@ -4,6 +4,7 @@ import loginReducer  from "../Features/loginSlice";
 import postsReducer from "../Pages/Dashboard/postSlice"; // Import your postsSlice
 import educationReducer from "../Pages/Education/contentSlice";
 import projectReducer from "../Pages/Projects/projectSlice";
+import userProfileReducer from "../Pages/Profile/profileSlice"
 
 
 // Define the root reducer
@@ -13,6 +14,7 @@ const rootReducer = combineReducers({
   posts: postsReducer,
   education: educationReducer,
   projects: projectReducer,
+  userProfile: userProfileReducer,
 });
 
 // Export the root reducer

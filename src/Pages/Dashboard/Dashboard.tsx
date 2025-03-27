@@ -120,6 +120,9 @@ const Dashboard = () => {
       case 'content':
         navigate('/content'); // Navigate to the "Create Civic Content" page
         break;
+      case 'createproject':
+        navigate('/createproject'); // Navigate to the "Create a Project" page
+        break;
       default:
         console.warn(`Unknown view: ${view}`);
     }

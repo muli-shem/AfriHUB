@@ -1,4 +1,7 @@
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import { logout } from "../Features/loginSlice";
+import { useNavigate } from "react-router-dom";
 import { FaUserCircle, FaBell, FaCog, FaSignOutAlt, FaBars } from "react-icons/fa";
 import "../styles/userNavbar.scss";
 
@@ -6,9 +9,12 @@ interface UserNavbarProps {
   handleNavigation: (view: string) => void;
 }
 
+
 const UserNavbar: React.FC<UserNavbarProps> = ({ handleNavigation }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
@@ -22,6 +28,15 @@ const UserNavbar: React.FC<UserNavbarProps> = ({ handleNavigation }) => {
     handleNavigation(view);
     setIsMobileMenuOpen(false);
   };
+  const handleLogout=()=>{
+    dispatch(logout());
+    //close dropdown
+    setIsDropdownOpen(false);
+    //navigate to login page
+    navigate('/login')
+    
+  }
+  
 
   return (
     <nav className="user-navbar">
@@ -47,6 +62,9 @@ const UserNavbar: React.FC<UserNavbarProps> = ({ handleNavigation }) => {
           <li>
             <a onClick={() => handleMobileNavigation("content")}>Create Civic Content</a>
           </li>
+          <li>
+            <a onClick={() => handleMobileNavigation("createproject")}>New Project</a>
+          </li>
         </ul>
 
         {/* User Actions */}
@@ -69,7 +87,7 @@ const UserNavbar: React.FC<UserNavbarProps> = ({ handleNavigation }) => {
                 <a className="dropdown-item" onClick={() => handleNavigation("settings")}>
                   <FaCog /> Settings
                 </a>
-                <a className="dropdown-item" onClick={() => handleNavigation("logout")}>
+                <a className="dropdown-item" onClick={handleLogout}>
                   <FaSignOutAlt /> Logout
                 </a>
               </div>

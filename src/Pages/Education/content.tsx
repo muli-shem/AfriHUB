@@ -183,6 +183,9 @@ const EducationalContentForm: React.FC = () => {
       case 'content':
         navigate('/content');
         break;
+      case 'createproject':
+        navigate('/createproject');
+      break;
       default:
         console.warn(`Unknown view: ${view}`);
     }

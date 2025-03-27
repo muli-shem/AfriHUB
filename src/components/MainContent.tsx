@@ -6,6 +6,7 @@ import HumanRightsCard from '../Pages/Education/HumanRights';
 import { humanRightsContent } from './RightSidebar';
 import '../styles/MainContent.scss';
 import ProjectList from '../Pages/Projects/ProjectList';
+import  UserProfile from '../Pages/Profile/userProfile'
 
 interface MainContentProps {
   currentView: string;
@@ -148,15 +149,13 @@ const MainContent: React.FC<MainContentProps> = ({
             <ProjectList />
           </section>
         );
-      
-      case 'notifications':
-        return <div className="content-placeholder">Notifications will appear here</div>;
-      
-      case 'messages':
-        return <div className="content-placeholder">Messages will appear here</div>;
-      
-      case 'profile':
-        return <div className="content-placeholder">Profile will appear here</div>;
+        case 'profile':
+          return (
+            <section className="explore-content">
+              <h2>Profile</h2>
+              < UserProfile/>
+            </section>
+          );
       
       default:
         return <div className="content-placeholder">Select an option from the sidebar</div>;

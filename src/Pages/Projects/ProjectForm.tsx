@@ -5,10 +5,12 @@ import { addProject } from './projectSlice';
 import CloudinaryService from '../../cloudinary/cloudinary';
 import '../../styles/ProjectForm.scss';
 import Footer from '../Footer';
-import Navbar from '../../components/Navbar';
+import UserNavbar from '../userNavbar';
+import { useNavigate } from 'react-router-dom';
 
 const ProjectForm: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>(); // Type your dispatch
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     title: '',
     description: '',
@@ -26,7 +28,25 @@ const ProjectForm: React.FC = () => {
 
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [uploadError, setUploadError] = useState<string | null>(null);
+  const handleNavigation = (view: string) => {
+    switch (view) {
+      case 'dashboard':
+        navigate('/dashboard');
+        break;
+      case 'education':
+        navigate('/content');
+        break;
+      case 'content':
+        navigate('/content');
+        break;
+      case 'createproject':
+        navigate('/createproject');
+        break;
 
+      default:
+        console.warn(`Unknown view: ${view}`);
+    }
+  };
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
@@ -85,6 +105,10 @@ const ProjectForm: React.FC = () => {
       });
       setImageFile(null);
       setUploadError(null);
+      await dispatch(addProject(project)).unwrap();
+      
+      // Navigate to dashboard after successful submission
+      navigate('/dashboard');
     } catch (error) {
       console.error('Error adding project:', error);
       setUploadError('Failed to add project');
@@ -93,7 +117,7 @@ const ProjectForm: React.FC = () => {
 
   return (
     <div>
-      <Navbar/>
+      <UserNavbar handleNavigation={handleNavigation}/>
     <form onSubmit={handleSubmit} className="project-form">
       <h2>Add New Project</h2>
       {uploadError && <div className="error-message">{uploadError}</div>}

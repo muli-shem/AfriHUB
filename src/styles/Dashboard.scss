@@ -62,15 +62,26 @@
 }
 
 @media (max-width: 768px) {
+  .dashboard-content {
+    flex-direction: column; // Stack content vertically on mobile
+  }
   .left-sidebar {
-    width: $sidebar-collapsed-width;
+    width: 100%; // Full width
+    height: calc(100vh - 60px); // Subtract bottom navigation height
+    margin-left: 0; // Remove left margin
+    margin-right: 0; // Remove right margin
+    padding: 0; // Remove padding
+    overflow-y: auto;
   }
 
   .main-content {
-    width: calc(100% - #{$sidebar-collapsed-width});
-    margin-left: $sidebar-collapsed-width;
+    width: 100%; // Full width
+    height: calc(100vh - 60px); // Subtract bottom navigation height
+    margin-left: 0; // Remove left margin
+    margin-right: 0; // Remove right margin
+    padding: 0; // Remove padding
+    overflow-y: auto;
   }
-  
   // Toggle button for mobile
   .sidebar-toggle {
     display: block;
@@ -93,7 +104,7 @@
 
 @media (max-width: 480px) {
   .main-content {
-    padding: 15px 10px;
+    padding: 0;
   }
 }
 
