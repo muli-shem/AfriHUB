@@ -14,7 +14,7 @@ import '../../styles/Dashboard.scss';
 const Dashboard = () => {
   const dispatch = useDispatch<typeof store.dispatch>();
   const navigate = useNavigate();
-  const [currentView, setCurrentView] = useState('home');
+  const [currentView, setCurrentView] = useState('explore');
 
   // State to track user interactions across different content types
   const [interactions, setInteractions] = useState<{
