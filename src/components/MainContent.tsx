@@ -6,7 +6,7 @@ import HumanRightsCard from '../Pages/Education/HumanRights';
 import { humanRightsContent } from './RightSidebar';
 import '../styles/MainContent.scss';
 import ProjectList from '../Pages/Projects/ProjectList';
-import  UserProfile from '../Pages/Profile/userProfile'
+import UserProfile from '../Pages/Profile/userProfile'
 
 interface MainContentProps {
   currentView: string;
@@ -32,7 +32,6 @@ const MainContent: React.FC<MainContentProps> = ({
   handleDislike,
   handleBookmark,
 }) => {
-  const { posts, status, error } = useSelector((state: RootState) => state.posts);
   const educationContent = useSelector((state: RootState) => state.education.items);
 
   // Function to get interaction state for a specific content item
@@ -50,20 +49,11 @@ const MainContent: React.FC<MainContentProps> = ({
   const renderContent = () => {
     switch (currentView) {
       case 'home':
+      case 'explore':
         return (
-          <section className="posts">
-            {status === 'loading' && <p>Loading posts...</p>}
-            {status === 'failed' && <p>Error: {error}</p>}
-            {status === 'succeeded' && (
-              <ul>
-                {Array.isArray(posts) && posts.map((post) => (
-                  <li key={post.id}>
-                    <p>{post.content}</p>
-                    <small>By {post.author} on {new Date(post.timestamp).toLocaleString()}</small>
-                  </li>
-                ))}
-              </ul>
-            )}
+          <section className="explore-content">
+            <h2>Explore Projects</h2>
+            <ProjectList />
           </section>
         );
       
@@ -141,24 +131,22 @@ const MainContent: React.FC<MainContentProps> = ({
             </div>
           </section>
         );
+        
+      case 'profile':
+        return (
+          <section className="explore-content">
+            <h2>Profile</h2>
+            <UserProfile/>
+          </section>
+        );
       
-      case 'explore':
+      default:
         return (
           <section className="explore-content">
             <h2>Explore Projects</h2>
             <ProjectList />
           </section>
         );
-        case 'profile':
-          return (
-            <section className="explore-content">
-              <h2>Profile</h2>
-              < UserProfile/>
-            </section>
-          );
-      
-      default:
-        return <div className="content-placeholder">Select an option from the sidebar</div>;
     }
   };
 

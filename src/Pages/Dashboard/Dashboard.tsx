@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { fetchPosts,createPost } from '../posts/postsSlice';
 import { fetchAllContent } from '../Education/contentSlice';
 import { store } from '../../app/store';
 import { useNavigate } from 'react-router-dom';
@@ -14,7 +13,6 @@ import '../../styles/Dashboard.scss';
 const Dashboard = () => {
   const dispatch = useDispatch<typeof store.dispatch>();
   const navigate = useNavigate();
-  const [currentView, setCurrentView] = useState('explore');
 
   // State to track user interactions across different content types
   const [interactions, setInteractions] = useState<{
@@ -30,8 +28,12 @@ const Dashboard = () => {
     humanrights: {},
   });
 
+  // Default view is now 'explore'
+  const [currentView, setCurrentView] = useState('explore');
+
   useEffect(() => {
-    dispatch(fetchPosts());
+    // Load content for explore view by default
+    dispatch(fetchAllContent());
   }, [dispatch]);
 
   // Generic handler for likes
@@ -109,11 +111,6 @@ const Dashboard = () => {
   const handleNavigation = (view: string) => {
     setCurrentView(view);
 
-    // Load educational content when switching to that view
-    if (view === 'education') {
-      dispatch(fetchAllContent());
-    }
-
     // Handle navigation for specific views
     switch (view) {
       case 'content':
@@ -127,13 +124,8 @@ const Dashboard = () => {
     }
   };
 
-  // Function to add a new post
-  const handleAddPost = () => {
-    const content = prompt('Enter your post content:');
-    if (content) {
-      dispatch(createPost({ content }));
-    }
-  };
+  // Placeholder empty function to satisfy LeftSidebar prop requirement
+  const handleAddPost = () => {};
 
   return (
     <div className="dashboard-container">
