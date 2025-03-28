@@ -28,7 +28,6 @@ const Dashboard = () => {
   }>({
     education: {},
     humanrights: {},
-    posts: {}
   });
 
   useEffect(() => {
