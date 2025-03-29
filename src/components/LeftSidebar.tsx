@@ -20,17 +20,18 @@ const LeftSidebar = ({ currentView, handleNavigation, handleAddPost }: LeftSideb
             <FaHome /> <span>Home</span>
           </li>
           <li 
-            className={currentView === 'explore' ? 'active' : ''} 
-            onClick={() => handleNavigation('explore')}
-          >
-            <FaSearch /> <span>Explore</span>
-          </li>
-          <li 
             className={currentView === 'education' ? 'active' : ''} 
             onClick={() => handleNavigation('education')}
           >
             <FaBookReader /> <span>Civic Education</span>
           </li>
+          <li 
+            className={currentView === 'explore' ? 'active' : ''} 
+            onClick={() => handleNavigation('explore')}
+          >
+            <FaSearch /> <span>Explore</span>
+          </li>
+          
           <li 
             className={currentView === 'profile' ? 'active' : ''} 
             onClick={() => handleNavigation('profile')}

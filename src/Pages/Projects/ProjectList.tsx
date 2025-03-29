@@ -54,7 +54,7 @@ const ProjectList: React.FC = () => {
     fetchAndRefresh();
 
     // Set up periodic refresh every 60 seconds
-    const intervalId = setInterval(fetchAndRefresh, 60000);
+    const intervalId = setInterval(fetchAndRefresh, 600000);
 
     // Cleanup interval on component unmount
     return () => clearInterval(intervalId);
@@ -155,11 +155,10 @@ const ProjectList: React.FC = () => {
     }
   };
 
-  // Function to render feedbacks
   const renderFeedbacks = (projectId: number) => {
     const project = projects.find(p => p.id === projectId);
     const feedbacks = project?.feedbacks || [];
-
+  
     return (
       <div className="feedbacks-section">
         <h4>Reported Issues</h4>
@@ -169,25 +168,19 @@ const ProjectList: React.FC = () => {
               <div key={feedback.id} className="feedback">
                 <div className="feedback-title">{feedback.title}</div>
                 <div className="feedback-description">{feedback.description}</div>
-                {feedback.evidence_image && (
-                  <div className="feedback-evidence">
-                    <div className="feedback-image">
-                      <img 
-                        src={feedback.evidence_image} 
-                        alt={`Evidence for ${feedback.title}`} 
-                      />
-                    </div>
-                  </div>
-                )}
+                
+                {/* Only show the image if evidence_image exists */}
                 {feedback.evidence_url && (
-                  <div className="feedback-external-link">
-                    <a 
-                      href={feedback.evidence_url} 
-                      target="_blank" 
-                      rel="noopener noreferrer"
-                    >
-                      External Evidence
-                    </a>
+                  <div className="project-image">
+                    <img 
+                      src={feedback.evidence_url} 
+                      alt={`Evidence for ${feedback.title}`}
+                      style={{ maxWidth: '100%', display: 'block' }}
+                      onError={(e) => {
+                        console.error('Image failed to load:', feedback.evidence_url);
+                        (e.target as HTMLImageElement).style.display = 'none';
+                      }}
+                    />
                   </div>
                 )}
               </div>
