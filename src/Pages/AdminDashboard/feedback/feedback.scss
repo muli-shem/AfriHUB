@@ -1,0 +1,208 @@
+// Variables
+$primary-color: #3498db;
+$danger-color: #e74c3c;
+$success-color: #2ecc71;
+$warning-color: #f39c12;
+$light-gray: #f5f5f5;
+$dark-gray: #333;
+$border-radius: 8px;
+$box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+$transition: all 0.3s ease;
+
+// Status colors
+$status-pending: #f39c12;
+$status-reviewed: #3498db;
+$status-resolved: #2ecc71;
+
+// Base styles
+.admin-feedback {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+
+  &__title {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 2rem;
+    color: $dark-gray;
+    text-align: center;
+  }
+}
+
+.loading, .error {
+  text-align: center;
+  padding: 2rem;
+  font-size: 1.2rem;
+}
+
+.error {
+  color: $danger-color;
+}
+
+// Feedback grid
+.feedback-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1rem;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+// Feedback card
+.feedback-card {
+  background: white;
+  border-radius: $border-radius;
+  box-shadow: $box-shadow;
+  padding: 1.5rem;
+  transition: $transition;
+
+  &.pending {
+    border-left: 4px solid $status-pending;
+  }
+
+  &.reviewed {
+    border-left: 4px solid $status-reviewed;
+  }
+
+  &.resolved {
+    border-left: 4px solid $status-resolved;
+  }
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    cursor: pointer;
+  }
+
+  &__title {
+    font-weight: 600;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex: 1;
+  }
+
+  &__actions {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+  }
+
+  &__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1rem;
+    font-size: 0.8rem;
+    color: #666;
+    margin-bottom: 1rem;
+  }
+
+  &__details {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid #eee;
+  }
+
+  &__description {
+    color: #444;
+    line-height: 1.5;
+    margin-bottom: 1rem;
+  }
+
+  &__evidence {
+    margin-top: 1rem;
+
+    h4 {
+      margin-bottom: 0.5rem;
+      font-size: 1rem;
+    }
+  }
+}
+
+// Status badge
+.status-badge {
+  font-size: 0.7rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  text-transform: capitalize;
+
+  &.pending {
+    background: rgba($status-pending, 0.1);
+    color: $status-pending;
+  }
+
+  &.reviewed {
+    background: rgba($status-reviewed, 0.1);
+    color: $status-reviewed;
+  }
+
+  &.resolved {
+    background: rgba($status-resolved, 0.1);
+    color: $status-resolved;
+  }
+}
+
+// Status select
+.status-select {
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  border: 1px solid #ddd;
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+
+// Evidence
+.evidence-link {
+  display: inline-block;
+  margin-bottom: 0.5rem;
+  color: $primary-color;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.evidence-image {
+  max-width: 100%;
+  max-height: 200px;
+  border-radius: 4px;
+  margin-top: 0.5rem;
+  display: block;
+}
+
+// Buttons
+.btn {
+  border: none;
+  background: none;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: $transition;
+  font-size: 1rem;
+
+  &--delete {
+    color: $danger-color;
+
+    &:hover {
+      background: rgba($danger-color, 0.1);
+    }
+  }
+
+  &--view {
+    color: $primary-color;
+
+    &:hover {
+      background: rgba($primary-color, 0.1);
+    }
+  }
+}

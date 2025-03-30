@@ -128,10 +128,10 @@ const Dashboard = () => {
   const handleAddPost = () => {};
 
   return (
-    <div className="dashboard-container">
+    <div className="dashboard-containerpro">
       <UserNavbar handleNavigation={handleNavigation} />
       
-      <div className="dashboard-content">
+      <div className="dashboard-contentpro">
         <LeftSidebar
           currentView={currentView}
           handleNavigation={handleNavigation}

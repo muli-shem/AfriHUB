@@ -1,0 +1,267 @@
+// Variables
+$primary-color: #3498db;
+$danger-color: #e74c3c;
+$success-color: #2ecc71;
+$warning-color: #f39c12;
+$light-gray: #f5f5f5;
+$dark-gray: #333;
+$border-radius: 8px;
+$box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+$transition: all 0.3s ease;
+
+// Content type colors
+$type-article: #3498db;
+$type-video: #9b59b6;
+$type-infographic: #2ecc71;
+$type-guide: #f39c12;
+$type-tutorial: #e74c3c;
+
+// Base styles
+.admin-education {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+  }
+
+  &__title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: $dark-gray;
+    margin: 0;
+  }
+}
+
+.loading, .error {
+  text-align: center;
+  padding: 2rem;
+  font-size: 1.2rem;
+}
+
+.error {
+  color: $danger-color;
+}
+
+// Content grid
+.content-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1rem;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+// Content card
+.content-card {
+  background: white;
+  border-radius: $border-radius;
+  box-shadow: $box-shadow;
+  padding: 1.5rem;
+  transition: $transition;
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  }
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+  }
+
+  &__title {
+    font-weight: 600;
+    margin: 0 0 0.5rem 0;
+    color: $dark-gray;
+  }
+
+  &__actions {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  &__image {
+    margin: 1rem 0;
+    
+    img {
+      max-width: 100%;
+      border-radius: 4px;
+      display: block;
+    }
+  }
+
+  &__content {
+    color: #444;
+    line-height: 1.5;
+    margin-bottom: 1rem;
+  }
+
+  &__meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.8rem;
+    color: #666;
+    padding-top: 1rem;
+    border-top: 1px solid #eee;
+  }
+}
+
+// Content type
+.content-type {
+  display: inline-block;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: capitalize;
+
+  &.article {
+    background: rgba($type-article, 0.1);
+    color: $type-article;
+  }
+
+  &.video {
+    background: rgba($type-video, 0.1);
+    color: $type-video;
+  }
+
+  &.infographic {
+    background: rgba($type-infographic, 0.1);
+    color: $type-infographic;
+  }
+
+  &.guide {
+    background: rgba($type-guide, 0.1);
+    color: $type-guide;
+  }
+
+  &.tutorial {
+    background: rgba($type-tutorial, 0.1);
+    color: $type-tutorial;
+  }
+}
+
+// Forms
+.content-form,
+.edit-form {
+  background: white;
+  border-radius: $border-radius;
+  box-shadow: $box-shadow;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  
+  h3 {
+    margin-top: 0;
+    margin-bottom: 1.5rem;
+  }
+}
+
+.form-group {
+  margin-bottom: 1rem;
+
+  label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: $dark-gray;
+  }
+
+  input,
+  select,
+  textarea {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-family: inherit;
+    font-size: inherit;
+
+    &:focus {
+      outline: none;
+      border-color: $primary-color;
+    }
+  }
+
+  textarea {
+    resize: vertical;
+    min-height: 100px;
+  }
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+// Buttons
+.btn {
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: $transition;
+  font-size: 1rem;
+  gap: 0.5rem;
+
+  &--create {
+    background: $primary-color;
+    color: white;
+
+    &:hover {
+      background: darken($primary-color, 10%);
+    }
+  }
+
+  &--edit {
+    background: none;
+    color: $primary-color;
+    padding: 0.5rem;
+
+    &:hover {
+      background: rgba($primary-color, 0.1);
+    }
+  }
+
+  &--delete {
+    background: none;
+    color: $danger-color;
+    padding: 0.5rem;
+
+    &:hover {
+      background: rgba($danger-color, 0.1);
+    }
+  }
+
+  &--save {
+    background: $success-color;
+    color: white;
+
+    &:hover {
+      background: darken($success-color, 10%);
+    }
+  }
+
+  &--cancel {
+    background: #eee;
+    color: $dark-gray;
+
+    &:hover {
+      background: #ddd;
+    }
+  }
+}
