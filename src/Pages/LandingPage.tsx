@@ -36,6 +36,8 @@ const HomePage: React.FC = () => {
           backgroundImage: `url(${heroImage})`,
           backgroundSize: "cover",
           backgroundPosition: "center",
+          backgroundRepeat:"no-repeat",
+           
         }}
       >
         <div className="hero-content">
@@ -180,13 +182,13 @@ const HomePage: React.FC = () => {
         <div className="testimonials-grid">
           {[
             {
-              name: "Jane Doe",
+              name: "Timothy Luvonga",
               feedback:
                 "AfriVoice Hub has transformed how we interact with our leaders. It's empowering and truly revolutionary!",
               avatar: janeDoeAvatar,
             },
             {
-              name: "John Smith",
+              name: "Jacob Muema",
               feedback:
                 "Through this platform, I learned about my rights and how to hold our leaders accountable. Highly recommended!",
               avatar: johnSmithAvatar,
