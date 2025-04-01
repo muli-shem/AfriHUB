@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { loginUser } from '../Features/loginSlice';
 import { AppDispatch, RootState } from '../app/store';
 import '../styles/Login.scss';
@@ -117,9 +117,11 @@ const Login: React.FC = () => {
                 />
                 <label htmlFor="remember">Remember me</label>
               </div>
-              <a href="/forgot-password" className="forgot-password">
-                Forgot password?
-              </a>
+              <div>
+               <Link to="/forgot-password" className="forgot-password">
+                 Forgot password?
+                </Link>
+                </div>
             </div>
             
             <button
@@ -131,7 +133,7 @@ const Login: React.FC = () => {
             </button>
             
             <div className="register-link">
-              Don't have an account? <a href="/register">Sign up</a>
+              Don't have an account? <Link to="/register">Sign up</Link>
             </div>
           </form>
         </div>

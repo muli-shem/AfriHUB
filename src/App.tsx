@@ -41,7 +41,7 @@ const App: React.FC = () => {
             <Route path="/projects" element={<ProjectList/>} />
             <Route path="/profile" element={<UserProfile/>} />
             <Route path="/forgot-password" element={<ForgotPassword />} />
-            <Route path="/reset-password/:token" element={<ResetPassword />} />
+            <Route path="/reset-password" element={<ResetPassword />} />
   {/* Admin routes nested under the Admin Layout */}
   <Route path="/admin" element={<AdminLayout />}>
         {/* Dashboard as index */}

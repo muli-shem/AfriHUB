@@ -9,16 +9,17 @@
   transition: transform $transition, box-shadow $transition;
   position: relative;
   animation: fadeIn 0.4s ease-in-out;
-  margin-bottom: 1.5rem; // Use relative units
+  margin-bottom: 1.5rem;
   box-shadow: $box-shadow;
-  // Remove horizontal margins completely
   margin-left: 0;
   margin-right: 0;
   width: 100%;
+  border: $card-border;
   
   &:hover {
     transform: translateY(-5px);
-    box-shadow: 0 15px 30px rgba($accent-color, 0.2);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2), 0 0 0 1px rgba($accent-color, 0.1);
+    background: $hover-color;
   }
   
   // Gradient border effect on hover
@@ -28,7 +29,7 @@
     inset: 0;
     border-radius: $border-radius;
     padding: 2px;
-    background: linear-gradient(135deg, $accent-color, $primary-color);
+    background: linear-gradient(135deg, $accent-color, rgba($accent-color, 0.3));
     mask: 
       linear-gradient(#fff 0 0) content-box, 
       linear-gradient(#fff 0 0);
@@ -47,22 +48,41 @@
   
   .card-image {
     width: 100%;
-    margin: 0.625rem 0; // Use relative units
+    margin: 0.625rem 0;
     border-radius: $border-radius;
     overflow: hidden;
+    position: relative;
+    
+    &::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(to bottom, 
+                  rgba($primary-color, 0) 70%, 
+                  rgba($primary-color, 0.8) 100%);
+      opacity: 0;
+      transition: opacity $transition;
+    }
+    
+    &:hover::after {
+      opacity: 1;
+    }
     
     &.twitter-style {
       max-height: none;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
       
       img {
         width: 100%;
         object-fit: contain;
         border-radius: $border-radius;
-        transition: transform 0.5s ease;
+        transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
         
         &:hover {
-          transform: scale(1.02);
+          transform: scale(1.03);
         }
       }
     }
@@ -79,18 +99,37 @@
         margin-bottom: 0.25rem;
         font-size: 1.25rem;
         font-weight: 600;
-        color: $dark-text;
+        color: $text-color;
+        position: relative;
+        display: inline-block;
+        
+        &::after {
+          content: '';
+          position: absolute;
+          bottom: -4px;
+          left: 0;
+          width: 30px;
+          height: 2px;
+          background: $accent-color;
+          border-radius: 1px;
+          transition: width $transition;
+        }
+        
+        &:hover::after {
+          width: 100%;
+        }
       }
       
       small {
         display: block;
         color: $light-text;
         font-size: 0.85rem;
+        margin-top: 0.5rem;
       }
     }
     
     .card-text {
-      color: $dark-text;
+      color: rgba($text-color, 0.9);
       line-height: 1.6;
       margin-bottom: 1rem;
       font-size: 1rem;
@@ -103,7 +142,7 @@
     justify-content: space-between;
     margin-top: 1.5rem;
     padding-top: 1rem;
-    border-top: 1px solid rgba(0, 0, 0, 0.05);
+    border-top: 1px solid rgba($hover-color, 0.6);
     
     .action-wrapper {
       flex: 1;
@@ -130,7 +169,7 @@
           left: 50%;
           width: 0;
           height: 0;
-          background: rgba(0, 0, 0, 0.05);
+          background: rgba($accent-color, 0.08);
           border-radius: 50%;
           transform: translate(-50%, -50%);
           transition: width 0.5s, height 0.5s;
@@ -152,45 +191,69 @@
         }
         
         &.animating .action-icon {
-          animation: pulse 0.5s ease-in-out;
+          animation: pulse 0.5s cubic-bezier(0.4, 0, 0.2, 1);
         }
         
         &.like-btn {
           &:hover {
             color: $like-color;
+            text-shadow: 0 0 10px rgba($like-color, 0.3);
           }
           
           &.active {
             color: $like-color;
             font-weight: 600;
+            
+            .action-icon {
+              filter: drop-shadow(0 0 3px rgba($like-color, 0.5));
+            }
           }
         }
         
         &.dislike-btn {
           &:hover {
             color: $dislike-color;
+            text-shadow: 0 0 10px rgba($dislike-color, 0.3);
           }
           
           &.active {
             color: $dislike-color;
             font-weight: 600;
+            
+            .action-icon {
+              filter: drop-shadow(0 0 3px rgba($dislike-color, 0.5));
+            }
           }
         }
         
         &.share-btn {
           &:hover {
             color: $share-color;
+            text-shadow: 0 0 10px rgba($share-color, 0.3);
+          }
+          
+          &.active {
+            color: $share-color;
+            
+            .action-icon {
+              filter: drop-shadow(0 0 3px rgba($share-color, 0.5));
+            }
           }
         }
         
         &.bookmark-btn {
           &:hover {
             color: $bookmark-color;
+            text-shadow: 0 0 10px rgba($bookmark-color, 0.3);
           }
           
           &.active {
             color: $bookmark-color;
             font-weight: 600;
+            
+            .action-icon {
+              filter: drop-shadow(0 0 3px rgba($bookmark-color, 0.5));
+            }
           }
         }
       }
@@ -213,7 +276,30 @@
 // Specific card types
 .education-card {
   border-left: 4px solid $accent-color;
-  background: linear-gradient(to right, rgba($accent-color, 0.03), rgba($accent-color, 0.01), $card-bg);
+  background: $gradient-bg;
+  position: relative;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      to right,
+      rgba($accent-color, 0.08) 0%,
+      rgba($accent-color, 0.03) 30%,
+      rgba($accent-color, 0) 100%
+    );
+    pointer-events: none;
+  }
+}
+
+// Human rights card styling
+.human-rights-card {
+  border-left: 4px solid $share-color;
+  background: linear-gradient(to right, rgba($share-color, 0.05), rgba($share-color, 0.01), $card-bg);
 }
 
 // Animations
@@ -240,16 +326,73 @@
   }
 }
 
+// Shimmer loading effect
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.card-loading {
+  background: $card-bg;
+  border-radius: $border-radius;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  
+  .shimmer {
+    background: linear-gradient(
+      90deg,
+      $card-bg 0%,
+      $hover-color 20%,
+      $card-bg 40%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+    border-radius: 4px;
+    
+    &.title {
+      height: 24px;
+      width: 70%;
+      margin-bottom: 1rem;
+    }
+    
+    &.text {
+      height: 16px;
+      width: 100%;
+      margin-bottom: 0.5rem;
+      
+      &:last-of-type {
+        width: 80%;
+      }
+    }
+    
+    &.image {
+      height: 200px;
+      width: 100%;
+      margin: 1rem 0;
+    }
+    
+    &.actions {
+      height: 36px;
+      width: 100%;
+      margin-top: 1rem;
+    }
+  }
+}
+
 // Responsive adjustments
 @media (max-width: 1200px) {
   .card {
-    margin-bottom: 1.25rem; // Adjusted for medium screens
+    margin-bottom: 1.25rem;
   }
 }
 
 @media (max-width: 768px) {
   .card {
-    margin-bottom: 1rem; // Adjusted for tablets
+    margin-bottom: 1rem;
     
     .card-content {
       padding: 1.25rem;
@@ -280,7 +423,7 @@
 
 @media (max-width: 480px) {
   .card {
-    margin-bottom: 0.75rem; // Adjusted for mobile devices
+    margin-bottom: 0.75rem;
     
     .card-content {
       padding: 1rem;

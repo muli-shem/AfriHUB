@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import '../styles/ForgotPassword.scss';
 import { LocalURL } from '../utils'
+import {Link} from 'react-router-dom'
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState('');
@@ -78,12 +79,11 @@ const ForgotPassword = () => {
           {isLoading ? 'Sending...' : 'Reset Password'}
         </button>
       </form>
-      
-      <div className="login-link">
-        <a href="/login">
-          Back to Login
-        </a>
-      </div>
+      <div>
+  <Link to="/forgot-password" className="login-link">
+    Forgot password?
+  </Link>
+</div>
     </div>
   );
 };

@@ -221,7 +221,8 @@ const HomePage: React.FC = () => {
           <h2>Join the Movement</h2>
           <p>Sign up today and be part of the change.</p>
           <motion.button
-            className="cta-button"
+            className="cta-button" 
+            onClick={() => navigate("/register")}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >

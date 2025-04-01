@@ -3,59 +3,56 @@
 
 // ProjectList styles
 .project-list-container {
-  padding: 10px 0;
+  padding: 20px 0;
   
   h2 {
-    font-size: 1.25rem;
-    margin-bottom: 15px;
+    font-size: 1.5rem;
+    margin-bottom: 20px;
     color: $text-color;
-    font-weight: 500;
+    font-weight: 600;
+    letter-spacing: -0.02em;
   }
 }
 
 .project-feed {
   display: flex;
   flex-direction: column;
-  gap: 1px;
+  gap: 12px;
   width: 100%;
+  max-width: 100%;
 }
 
 .project-card {
-  background-color:  $primary-color !important;
-  border-bottom: 1px solid $hover-color;
-  transition: background-color $transition;
+  background-color: $primary-color !important;
+  border: 1px solid $hover-color;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  transition: all 0.2s ease-in-out;
+  overflow: hidden;
   
   &:hover {
-    background-color: $secondary-color;;
-  }
-  
-  &:first-child {
-    border-top-left-radius: 8px;
-    border-top-right-radius: 8px;
-  }
-  
-  &:last-child {
-    border-bottom-left-radius: 8px;
-    border-bottom-right-radius: 8px;
-    border-bottom: none;
+    background-color: $secondary-color;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   }
 }
 
 .project-content {
-  padding: 15px;
+  padding: 20px;
   
   h3 {
-    font-size: 1.1rem;
-    font-weight: 600;
-    margin-bottom: 8px;
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 10px;
     color: $text-color;
+    line-height: 1.3;
   }
   
   p {
-    font-size: 0.95rem;
-    line-height: 1.5;
+    font-size: 1rem;
+    line-height: 1.6;
     color: rgba($text-color, 0.9);
-    margin-bottom: 12px;
+    margin-bottom: 16px;
   }
 }
 
@@ -63,111 +60,143 @@
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  gap: 12px;
-  margin-bottom: 12px;
+  gap: 16px;
+  margin-bottom: 16px;
   
   .status {
-    font-size: 0.8rem;
-    padding: 4px 10px;
-    border-radius: 16px;
+    font-size: 0.85rem;
+    padding: 5px 12px;
+    border-radius: 20px;
     background-color: $active-color;
     color: $text-color;
+    font-weight: 500;
+    letter-spacing: 0.02em;
   }
   
   .progress-bar {
     flex: 1;
-    height: 4px;
-    background-color: $primary-color;
-    border-radius: 2px;
+    height: 6px;
+    background-color: rgba($primary-color, 0.3);
+    border-radius: 3px;
     overflow: hidden;
     
     .progress-fill {
       height: 100%;
       background-color: $accent-color;
+      border-radius: 3px;
+      transition: width 0.3s ease;
     }
   }
   
   .progress-text {
-    font-size: 0.8rem;
-    color: rgba($text-color, 0.7);
+    font-size: 0.85rem;
+    color: rgba($text-color, 0.8);
     min-width: 45px;
     text-align: right;
+    font-weight: 500;
   }
 }
 
 .project-image {
-  margin: 8px -15px;
+  margin: 12px -20px;
+  position: relative;
   
   img {
     width: 100%;
-    max-height: 250px;
+    max-height: 300px;
     object-fit: cover;
+    display: block;
   }
 }
 
-// Feedbacks section styling - UPDATED
+// Feedbacks section styling
 .feedbacks-section {
-  margin-top: 16px;
-  border-top: 1px solid $hover-color;
-  padding-top: 16px;
+  margin-top: 24px;
+  border-top: 1px solid rgba($hover-color, 0.6);
+  padding-top: 20px;
   
   h4 {
-    font-size: 1rem;
-    margin-bottom: 12px;
+    font-size: 1.1rem;
+    margin-bottom: 16px;
     font-weight: 600;
     color: $text-color;
+    display: flex;
+    align-items: center;
+    
+    &::before {
+      content: '';
+      display: inline-block;
+      width: 4px;
+      height: 16px;
+      background-color: $accent-color;
+      margin-right: 8px;
+      border-radius: 2px;
+    }
   }
 }
 
 .feedback-list {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 16px;
 }
 
 .feedback {
-  background-color: lighten($hover-color, 2%);
-  border-radius: 8px;
-  padding: 12px;
+  background-color: rgba($hover-color, 0.4);
+  border-radius: 10px;
+  padding: 16px;
+  border-left: 3px solid $accent-color;
   
   .feedback-title {
     font-weight: 600;
-    font-size: 0.95rem;
-    margin-bottom: 6px;
+    font-size: 1rem;
+    margin-bottom: 8px;
     color: $text-color;
   }
   
   .feedback-description {
-    font-size: 0.9rem;
+    font-size: 0.95rem;
     color: rgba($text-color, 0.9);
-    margin-bottom: 8px;
+    margin-bottom: 12px;
+    line-height: 1.5;
   }
   
-  // Updated styles for feedback images to match project images
-  .feedback-image {
+  .project-image {
     width: 100%;
-    margin: 8px 0;
+    margin: 12px 0;
     border-radius: 8px;
     overflow: hidden;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
     
     img {
       width: 100%;
       max-height: 250px;
       object-fit: cover;
       display: block;
+      transition: transform 0.3s ease;
+      
+      &:hover {
+        transform: scale(1.02);
+      }
     }
   }
   
   .feedback-evidence {
-    margin-top: 8px;
+    margin-top: 12px;
     
     a {
       color: $accent-color;
       text-decoration: none;
-      font-size: 0.8rem;
+      font-size: 0.85rem;
+      display: inline-flex;
+      align-items: center;
       
       &:hover {
         text-decoration: underline;
+      }
+      
+      svg {
+        margin-right: 4px;
       }
     }
   }
@@ -175,9 +204,9 @@
 
 // Interaction section styling
 .project-interactions {
-  margin-top: 12px;
-  border-top: 1px solid $hover-color;
-  padding-top: 12px;
+  margin-top: 16px;
+  border-top: 1px solid rgba($hover-color, 0.6);
+  padding-top: 16px;
 }
 
 .interaction-buttons {
@@ -187,87 +216,132 @@
   .interaction-btn {
     background: none;
     border: none;
-    padding: 8px;
+    padding: 8px 12px;
     display: flex;
     align-items: center;
-    gap: 4px;
+    gap: 6px;
     color: rgba($text-color, 0.7);
     cursor: pointer;
-    transition: color $transition;
+    transition: all 0.2s ease;
+    border-radius: 20px;
     
     svg {
       font-size: 18px;
+      transition: transform 0.2s ease;
     }
     
     &:hover {
       color: $accent-color;
+      background-color: rgba($hover-color, 0.3);
+      
+      svg {
+        transform: scale(1.1);
+      }
     }
     
     &.active {
       color: $accent-color;
+      background-color: rgba($accent-color, 0.1);
       
       &.love {
         color: $like-color;
+        background-color: rgba($like-color, 0.1);
       }
       
       &.dislike {
         color: $dislike-color;
+        background-color: rgba($dislike-color, 0.1);
       }
     }
     
     .count {
-      font-size: 0.8rem;
+      font-size: 0.85rem;
+      font-weight: 500;
     }
     
     &.report:hover {
       color: $dislike-color;
+      background-color: rgba($dislike-color, 0.1);
     }
   }
 }
 
 // Comments section
 .comments-section {
-  margin-top: 16px;
-  border-top: 1px solid $hover-color;
-  padding-top: 16px;
+  margin-top: 24px;
+  border-top: 1px solid rgba($hover-color, 0.6);
+  padding-top: 20px;
   
   h4 {
-    font-size: 1rem;
-    margin-bottom: 12px;
+    font-size: 1.1rem;
+    margin-bottom: 16px;
     font-weight: 600;
     color: $text-color;
+    display: flex;
+    align-items: center;
+    
+    &::before {
+      content: '';
+      display: inline-block;
+      width: 4px;
+      height: 16px;
+      background-color: $accent-color;
+      margin-right: 8px;
+      border-radius: 2px;
+    }
   }
 }
 
 .comment-list {
-  max-height: 300px;
+  max-height: 350px;
   overflow-y: auto;
-  margin-bottom: 16px;
+  margin-bottom: 20px;
+  padding-right: 8px;
+  
+  /* Custom scrollbar */
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+  
+  &::-webkit-scrollbar-track {
+    background: rgba($hover-color, 0.3);
+    border-radius: 3px;
+  }
+  
+  &::-webkit-scrollbar-thumb {
+    background-color: rgba($accent-color, 0.5);
+    border-radius: 3px;
+    
+    &:hover {
+      background-color: $accent-color;
+    }
+  }
 }
 
 .comment {
-  padding: 12px;
-  border-radius: 8px;
-  background-color: $hover-color;
-  margin-bottom: 8px;
+  padding: 14px;
+  border-radius: 10px;
+  background-color: rgba($hover-color, 0.4);
+  margin-bottom: 12px;
+  border-left: 3px solid rgba($accent-color, 0.6);
   
   .comment-user {
     font-weight: 600;
-    font-size: 0.9rem;
-    margin-bottom: 4px;
+    font-size: 0.95rem;
+    margin-bottom: 6px;
     color: $text-color;
   }
   
   .comment-content {
-    font-size: 0.9rem;
-    line-height: 1.4;
+    font-size: 0.95rem;
+    line-height: 1.5;
     color: rgba($text-color, 0.9);
   }
   
   .comment-date {
-    font-size: 0.75rem;
+    font-size: 0.8rem;
     color: rgba($text-color, 0.6);
-    margin-top: 4px;
+    margin-top: 8px;
     text-align: right;
   }
 }
@@ -275,21 +349,23 @@
 .comment-form {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 12px;
   
   textarea {
-    padding: 12px;
-    border: 1px solid $hover-color;
-    border-radius: 8px;
+    padding: 14px;
+    border: 1px solid rgba($hover-color, 0.8);
+    border-radius: 10px;
     resize: vertical;
-    min-height: 80px;
-    font-size: 0.9rem;
-    background-color: $secondary-color;
+    min-height: 100px;
+    font-size: 0.95rem;
+    background-color: rgba($secondary-color, 0.5);
     color: $text-color;
+    transition: all 0.2s ease;
     
     &:focus {
       outline: none;
       border-color: $accent-color;
+      box-shadow: 0 0 0 2px rgba($accent-color, 0.2);
     }
   }
   
@@ -299,10 +375,11 @@
     color: white;
     border: none;
     border-radius: 24px;
-    padding: 8px 16px;
-    font-size: 0.9rem;
+    padding: 10px 20px;
+    font-size: 0.95rem;
     font-weight: 600;
     cursor: pointer;
+    transition: all 0.2s ease;
     
     &:disabled {
       opacity: 0.6;
@@ -311,41 +388,77 @@
     
     &:hover:not(:disabled) {
       background-color: darken($accent-color, 5%);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba($accent-color, 0.3);
+    }
+    
+    &:active:not(:disabled) {
+      transform: translateY(0);
     }
   }
 }
 
+// Login message
+.login-message {
+  text-align: center;
+  padding: 16px;
+  background-color: rgba($hover-color, 0.3);
+  border-radius: 10px;
+  color: rgba($text-color, 0.7);
+  font-size: 0.95rem;
+  border: 1px dashed rgba($hover-color, 0.8);
+}
+
 // Feedback form
 .feedback-section {
-  margin-top: 16px;
-  border-top: 1px solid $hover-color;
-  padding-top: 16px;
+  margin-top: 24px;
+  border-top: 1px solid rgba($hover-color, 0.6);
+  padding-top: 20px;
   
   h4 {
-    font-size: 1rem;
-    margin-bottom: 12px;
+    font-size: 1.1rem;
+    margin-bottom: 16px;
     font-weight: 600;
-    color: rgba($text-color, 0.8);
+    color: $text-color;
+    display: flex;
+    align-items: center;
+    
+    &::before {
+      content: '';
+      display: inline-block;
+      width: 4px;
+      height: 16px;
+      background-color: $dislike-color;
+      margin-right: 8px;
+      border-radius: 2px;
+    }
   }
 }
 
 .feedback-form {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 16px;
   
   input, textarea {
-    padding: 12px;
-    border: 1px solid $hover-color;
-    border-radius: 8px;
-    font-size: 0.9rem;
-    background-color: $secondary-color;
+    padding: 14px;
+    border: 1px solid rgba($hover-color, 0.8);
+    border-radius: 10px;
+    font-size: 0.95rem;
+    background-color: rgba($secondary-color, 0.5);
     color: $text-color;
+    transition: all 0.2s ease;
     
     &:focus {
       outline: none;
       border-color: $accent-color;
+      box-shadow: 0 0 0 2px rgba($accent-color, 0.2);
     }
+  }
+  
+  textarea {
+    min-height: 120px;
+    resize: vertical;
   }
   
   .image-upload-container {
@@ -356,15 +469,22 @@
       display: flex;
       align-items: center;
       gap: 8px;
-      background: none;
-      border: 1px solid $hover-color;
-      border-radius: 8px;
-      padding: 10px 16px;
+      background: rgba($hover-color, 0.3);
+      border: 1px solid rgba($hover-color, 0.8);
+      border-radius: 10px;
+      padding: 12px 18px;
       color: rgba($text-color, 0.9);
       cursor: pointer;
+      transition: all 0.2s ease;
+      font-weight: 500;
       
       &:hover {
-        background-color: $hover-color;
+        background-color: rgba($hover-color, 0.5);
+        border-color: $accent-color;
+      }
+      
+      svg {
+        color: $accent-color;
       }
     }
   }
@@ -372,22 +492,25 @@
   .feedback-buttons {
     display: flex;
     justify-content: flex-end;
-    gap: 8px;
+    gap: 12px;
+    margin-top: 8px;
     
     button {
       border-radius: 24px;
-      padding: 8px 16px;
-      font-size: 0.9rem;
+      padding: 10px 20px;
+      font-size: 0.95rem;
       font-weight: 600;
       cursor: pointer;
+      transition: all 0.2s ease;
       
       &:first-child {
         background: none;
-        border: 1px solid $hover-color;
-        color: rgba($text-color, 0.7);
+        border: 1px solid rgba($hover-color, 0.8);
+        color: rgba($text-color, 0.8);
         
         &:hover {
-          background-color: $hover-color;
+          background-color: rgba($hover-color, 0.3);
+          color: $text-color;
         }
       }
       
@@ -403,6 +526,12 @@
         
         &:hover:not(:disabled) {
           background-color: darken($accent-color, 5%);
+          transform: translateY(-2px);
+          box-shadow: 0 4px 8px rgba($accent-color, 0.3);
+        }
+        
+        &:active:not(:disabled) {
+          transform: translateY(0);
         }
       }
     }
@@ -412,21 +541,68 @@
 // Loading and error states
 .loading-container, .error-container {
   text-align: center;
-  padding: 30px 0;
-  font-size: 1rem;
+  padding: 40px 0;
+  font-size: 1.1rem;
   color: rgba($text-color, 0.7);
+  background-color: rgba($hover-color, 0.2);
+  border-radius: 12px;
+  margin: 20px 0;
+}
+
+.loading-container {
+  position: relative;
+  
+  &::after {
+    content: '';
+    display: block;
+    width: 30px;
+    height: 30px;
+    border: 3px solid rgba($accent-color, 0.3);
+    border-top-color: $accent-color;
+    border-radius: 50%;
+    margin: 15px auto 0;
+    animation: spin 1s linear infinite;
+  }
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
 }
 
 .error-container {
   color: $dislike-color;
+  border-left: 4px solid $dislike-color;
 }
 
 // Media queries for responsive layout
+@media (min-width: 769px) {
+  .project-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    
+    &:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+    }
+  }
+}
+
 @media (max-width: 768px) {
+  .project-list-container h2 {
+    font-size: 1.3rem;
+  }
+  
+  .project-content {
+    padding: 16px;
+    
+    h3 {
+      font-size: 1.15rem;
+    }
+  }
+  
   .project-meta {
     flex-direction: column;
     align-items: flex-start;
-    gap: 8px;
+    gap: 10px;
     
     .progress-bar {
       width: 100%;
@@ -438,36 +614,87 @@
   }
   
   .interaction-buttons {
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    gap: 4px;
+    
     .interaction-btn {
-      padding: 6px;
+      padding: 6px 10px;
       
       svg {
         font-size: 16px;
       }
+      
+      .count {
+        font-size: 0.8rem;
+      }
+    }
+  }
+  
+  .feedback-form .feedback-buttons {
+    flex-direction: column;
+    
+    button {
+      width: 100%;
     }
   }
 }
 
 @media (max-width: 480px) {
-  .project-content {
-    padding: 12px;
+  .project-list-container {
+    padding: 15px 0;
   }
   
-  .project-image, .feedback-image {
-    margin: 8px -12px;
+  .project-content {
+    padding: 14px;
+    
+    h3 {
+      font-size: 1.1rem;
+    }
+    
+    p {
+      font-size: 0.9rem;
+    }
+  }
+  
+  .project-image, .feedback .project-image {
+    margin: 10px -14px;
     
     img {
       max-height: 200px;
     }
   }
   
-  .feedback-form {
-    .feedback-buttons {
-      flex-direction: column;
-      
-      button {
-        width: 100%;
-      }
+  .comment-form, .feedback-form {
+    textarea, input {
+      padding: 12px;
+      font-size: 0.9rem;
+    }
+    
+    button {
+      padding: 8px 16px;
+      font-size: 0.9rem;
     }
   }
+  
+  .comments-section h4, .feedbacks-section h4, .feedback-section h4 {
+    font-size: 1rem;
+  }
+  
+  .comment .comment-user {
+    font-size: 0.9rem;
+  }
+  
+  .comment .comment-content {
+    font-size: 0.85rem;
+  }
+  
+  .feedback .feedback-title {
+    font-size: 0.9rem;
+  }
+  
+  .feedback .feedback-description {
+    font-size: 0.85rem;
+  }
 }
+
