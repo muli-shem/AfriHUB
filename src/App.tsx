@@ -18,7 +18,8 @@ import AdminUsers from "./Pages/AdminDashboard/user/userList";
 import AdminProjects from "./Pages/AdminDashboard/Projects/adminproject";
 import AdminEducationContent from "./Pages/AdminDashboard/Education/adminEducation";
 import AdminLayout from "./Pages/AdminDashboard/adminLayoutForm";
-
+import ForgotPassword from './Features/ForgotPassword';
+import ResetPassword from './Features/ResetPassword';
  
 
 const App: React.FC = () => {
@@ -39,6 +40,8 @@ const App: React.FC = () => {
             <Route path="/createproject" element={<ProjectForm/>} />
             <Route path="/projects" element={<ProjectList/>} />
             <Route path="/profile" element={<UserProfile/>} />
+            <Route path="/forgot-password" element={<ForgotPassword />} />
+            <Route path="/reset-password/:token" element={<ResetPassword />} />
   {/* Admin routes nested under the Admin Layout */}
   <Route path="/admin" element={<AdminLayout />}>
         {/* Dashboard as index */}
